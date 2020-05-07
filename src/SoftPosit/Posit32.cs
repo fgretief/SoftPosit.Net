@@ -9,7 +9,7 @@ namespace System.Numerics
     /// Posit (nbits=32, es=2)
     /// </summary>
     [StructLayout(LayoutKind.Sequential)]
-    public readonly struct Posit32
+    public readonly struct Posit32 : IEquatable<Posit32>
     {
         internal readonly uint ui; // unsigned integer value
 
@@ -18,6 +18,56 @@ namespace System.Numerics
 
         internal Posit32(uint value) => ui = value;
 
-        // TODO: add operators
+        public static bool operator ==(Posit32 a, Posit32 b)
+        {
+            return (int)a.ui == (int)b.ui;
+        }
+
+        public static bool operator !=(Posit32 a, Posit32 b)
+        {
+            return !(a == b);
+        }
+
+        public static bool operator <=(Posit32 a, Posit32 b)
+        {
+            return (int)a.ui <= (int)b.ui;
+        }
+
+        public static bool operator >=(Posit32 a, Posit32 b)
+        {
+            return !(a >= b);
+        }
+
+        public static bool operator <(Posit32 a, Posit32 b)
+        {
+            return (int)a.ui < (int)b.ui;
+        }
+
+        public static bool operator >(Posit32 a, Posit32 b)
+        {
+            return !(a < b);
+        }
+
+        public static explicit operator Posit32(Quire32 value)
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool Equals(Posit32 other)
+        {
+            return this == other;
+        }
+
+        public override bool Equals(object obj)
+        {
+            return obj is Posit32 other && Equals(other);
+        }
+
+        public override int GetHashCode()
+        {
+            return (int)ui;
+        }
+
+        // TODO: add more operators
     }
 }

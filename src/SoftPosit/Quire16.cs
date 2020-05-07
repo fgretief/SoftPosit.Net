@@ -22,6 +22,11 @@ namespace System.Numerics
                 m_value[i] = 0;
         }
 
-        // TODO: add operators
+        public Posit16 ToPosit()
+        {
+            return (Posit16)this;
+        }
+
+        // TODO: add more operators
     }
 }
