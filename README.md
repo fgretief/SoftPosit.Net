@@ -1,7 +1,7 @@
 # SoftPosit.Net
+![.NET Core](https://github.com/fgretief/SoftPosit.Net/workflows/.NET%20Core/badge.svg)
 
 .NET assembly for the C-based [SoftPosit](https://gitlab.com/cerlane/SoftPosit) library - a posit arithmetic emulator.
-
 
 ### Example
 
