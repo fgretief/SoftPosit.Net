@@ -11,7 +11,7 @@ namespace System.Numerics
     /// Posit (nbits=8, es=0)
     /// </summary>
     [StructLayout(LayoutKind.Sequential)]
-    public readonly struct Posit8 : IEquatable<Posit8>
+    public readonly struct Posit8 : IComparable, IComparable<Posit8>, IEquatable<Posit8>
     {
         internal readonly byte ui; // unsigned integer value
 
@@ -61,51 +61,118 @@ namespace System.Numerics
         /// <summary>Infinity (±∞).</summary>
         public static readonly Posit8 Infinity = NaR;
 
+        /// <summary>
+        /// Returns a value that indicates whether two specified <see cref="Posit8"/> values are equal.
+        /// </summary>
         public static bool operator ==(Posit8 a, Posit8 b)
         {
             return (sbyte)a.ui == (sbyte)b.ui;
         }
 
+        /// <summary>
+        /// Returns a value that indicates whether two specified <see cref="Posit8"/> values are not equal.
+        /// </summary>
         public static bool operator !=(Posit8 a, Posit8 b)
         {
             return !(a == b);
         }
 
+        /// <summary>
+        /// Returns a value that indicates whether a specified <see cref="Posit8"/>
+        /// value is less than or equal to another specified <see cref="Posit8"/> value.
+        /// </summary>
         public static bool operator <=(Posit8 a, Posit8 b)
         {
             return (sbyte)a.ui <= (sbyte)b.ui;
         }
 
+        /// <summary>
+        /// Returns a value that indicates whether a specified <see cref="Posit8"/>
+        /// value is greater than or equal to another specified <see cref="Posit8"/> value.
+        /// </summary>
         public static bool operator >=(Posit8 a, Posit8 b)
         {
             return !(a >= b);
         }
 
+        /// <summary>
+        /// Returns a value that indicates whether a specified <see cref="Posit8"/>
+        /// value is less than another specified <see cref="Posit8"/> value.
+        /// </summary>
         public static bool operator <(Posit8 a, Posit8 b)
         {
             return (sbyte)a.ui < (sbyte)b.ui;
         }
 
+        /// <summary>
+        /// Returns a value that indicates whether a specified <see cref="Posit8"/>
+        /// value is greater than another specified <see cref="Posit8"/> value.
+        /// </summary>
         public static bool operator >(Posit8 a, Posit8 b)
         {
             return !(a < b);
         }
 
+        /// <summary>
+        /// Defines an explicit conversion of a <see cref="Quire8"/> accumulator to a <see cref="Posit8"/> number.
+        /// </summary>
         public static explicit operator Posit8(Quire8 value)
         {
             throw new NotImplementedException();
         }
 
+        /// <summary>
+        /// Compares this instance to a specified <see cref="Posit8"/> number
+        /// and returns an integer that indicates whether the value of this
+        /// instance is less than, equal to, or greater than the value of the
+        /// specified number.
+        /// </summary>
+        /// <param name="other">A <see cref="Posit8"/> number to compare.</param>
+        /// <returns>A signed number indicating the relative values of this instance and value.</returns>
+        public int CompareTo(Posit8 other)
+        {
+            if (this == other) return 0;
+            return this < other ? -1 : 1;
+        }
+
+        /// <summary>
+        /// Compares this instance to a specified object and returns an integer
+        /// that indicates whether the value of this instance is less than,
+        /// equal to, or greater than the value of the specified object.
+        /// </summary>
+        /// <param name="obj">An object to compare, or null.</param>
+        /// <returns>A signed number indicating the relative values of this instance and value.</returns>
+        public int CompareTo(object obj)
+        {
+            if (obj == null) return 1;
+            if (obj is Posit8 other) return CompareTo(other);
+            throw new ArgumentException($"Must be a {nameof(Posit8)}");
+        }
+
+        /// <summary>
+        /// Returns a value indicating whether this instance and a specified <see cref="Posit8"/> number represent the same value.
+        /// </summary>
+        /// <param name="other">A <see cref="Posit8"/> number to compare to this instance.</param>
+        /// <returns><c>true</c> if <paramref name="other"/> is equal to this instance; otherwise, <c>false</c>.</returns>
         public bool Equals(Posit8 other)
         {
             return this == other;
         }
 
+        /// <summary>
+        /// Returns a value indicating whether this instance is equal to a specified object.
+        /// </summary>
+        /// <param name="obj">An object to compare with this instance.</param>
+        /// <returns><c>true</c> if <paramref name="obj"/> is an instance of <see cref="Posit8"/> and equals the value of this instance; otherwise, <c>false</c>.</returns>
         public override bool Equals(object obj)
         {
             return obj is Posit8 other && Equals(other);
         }
 
+        /// <summary>
+        /// Returns the hash code for this instance.
+        /// </summary>
+        /// <returns>A 32-bit signed integer hash code.</returns>
         public override int GetHashCode()
         {
             return ui;
@@ -114,6 +181,9 @@ namespace System.Numerics
         // TODO: add more operators
     }
 
+    /// <summary>
+    /// Utility class with static methods for Posit numbers.
+    /// </summary>
     public static partial class Posit
     {
         /// <summary>Determines whether the specified value is zero.</summary>
@@ -134,6 +204,15 @@ namespace System.Numerics
 
         /// <summary>Determines whether the specified value is negative.</summary>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static bool IsNegative(Posit8 p) => (short)p.ui < 0;
+        public static bool IsNegative(Posit8 p) => (sbyte)p.ui < 0;
+    }
+
+    /// <summary>
+    /// Provides constants and static methods for trigonometric, logarithmic,
+    /// and other common mathematical functions.
+    /// </summary>
+    public static partial class MathP
+    {
+
     }
 }

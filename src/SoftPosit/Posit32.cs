@@ -11,7 +11,7 @@ namespace System.Numerics
     /// Posit (nbits=32, es=2)
     /// </summary>
     [StructLayout(LayoutKind.Sequential)]
-    public readonly struct Posit32 : IEquatable<Posit32>
+    public readonly struct Posit32 : IComparable, IComparable<Posit32>, IEquatable<Posit32>
     {
         internal readonly uint ui; // unsigned integer value
 
@@ -63,51 +63,118 @@ namespace System.Numerics
         /// <summary>Infinity (±∞).</summary>
         public static readonly Posit32 Infinity = NaR;
 
+        /// <summary>
+        /// Returns a value that indicates whether two specified <see cref="Posit32"/> values are equal.
+        /// </summary>
         public static bool operator ==(Posit32 a, Posit32 b)
         {
             return (int)a.ui == (int)b.ui;
         }
 
+        /// <summary>
+        /// Returns a value that indicates whether two specified <see cref="Posit32"/> values are not equal.
+        /// </summary>
         public static bool operator !=(Posit32 a, Posit32 b)
         {
             return !(a == b);
         }
 
+        /// <summary>
+        /// Returns a value that indicates whether a specified <see cref="Posit32"/>
+        /// value is less than or equal to another specified <see cref="Posit32"/> value.
+        /// </summary>
         public static bool operator <=(Posit32 a, Posit32 b)
         {
             return (int)a.ui <= (int)b.ui;
         }
 
+        /// <summary>
+        /// Returns a value that indicates whether a specified <see cref="Posit32"/>
+        /// value is greater than or equal to another specified <see cref="Posit32"/> value.
+        /// </summary>
         public static bool operator >=(Posit32 a, Posit32 b)
         {
             return !(a >= b);
         }
 
+        /// <summary>
+        /// Returns a value that indicates whether a specified <see cref="Posit32"/>
+        /// value is less than another specified <see cref="Posit32"/> value.
+        /// </summary>
         public static bool operator <(Posit32 a, Posit32 b)
         {
             return (int)a.ui < (int)b.ui;
         }
 
+        /// <summary>
+        /// Returns a value that indicates whether a specified <see cref="Posit32"/>
+        /// value is greater than another specified <see cref="Posit32"/> value.
+        /// </summary>
         public static bool operator >(Posit32 a, Posit32 b)
         {
             return !(a < b);
         }
 
+        /// <summary>
+        /// Defines an explicit conversion of a <see cref="Quire32"/> accumulator to a <see cref="Posit32"/> number.
+        /// </summary>
         public static explicit operator Posit32(Quire32 value)
         {
             throw new NotImplementedException();
         }
 
+        /// <summary>
+        /// Compares this instance to a specified <see cref="Posit32"/> number
+        /// and returns an integer that indicates whether the value of this
+        /// instance is less than, equal to, or greater than the value of the
+        /// specified number.
+        /// </summary>
+        /// <param name="other">A <see cref="Posit32"/> number to compare.</param>
+        /// <returns>A signed number indicating the relative values of this instance and value.</returns>
+        public int CompareTo(Posit32 other)
+        {
+            if (this == other) return 0;
+            return this < other ? -1 : 1;
+        }
+
+        /// <summary>
+        /// Compares this instance to a specified object and returns an integer
+        /// that indicates whether the value of this instance is less than,
+        /// equal to, or greater than the value of the specified object.
+        /// </summary>
+        /// <param name="obj">An object to compare, or null.</param>
+        /// <returns>A signed number indicating the relative values of this instance and value.</returns>
+        public int CompareTo(object obj)
+        {
+            if (obj == null) return 1;
+            if (obj is Posit32 other) return CompareTo(other);
+            throw new ArgumentException($"Must be a {nameof(Posit32)}");
+        }
+
+        /// <summary>
+        /// Returns a value indicating whether this instance and a specified <see cref="Posit32"/> number represent the same value.
+        /// </summary>
+        /// <param name="other">A <see cref="Posit32"/> number to compare to this instance.</param>
+        /// <returns><c>true</c> if <paramref name="other"/> is equal to this instance; otherwise, <c>false</c>.</returns>
         public bool Equals(Posit32 other)
         {
             return this == other;
         }
 
+        /// <summary>
+        /// Returns a value indicating whether this instance is equal to a specified object.
+        /// </summary>
+        /// <param name="obj">An object to compare with this instance.</param>
+        /// <returns><c>true</c> if <paramref name="obj"/> is an instance of <see cref="Posit32"/> and equals the value of this instance; otherwise, <c>false</c>.</returns>
         public override bool Equals(object obj)
         {
             return obj is Posit32 other && Equals(other);
         }
 
+        /// <summary>
+        /// Returns the hash code for this instance.
+        /// </summary>
+        /// <returns>A 32-bit signed integer hash code.</returns>
         public override int GetHashCode()
         {
             return (int)ui;
@@ -136,6 +203,11 @@ namespace System.Numerics
 
         /// <summary>Determines whether the specified value is negative.</summary>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static bool IsNegative(Posit32 p) => (short)p.ui < 0;
+        public static bool IsNegative(Posit32 p) => (int)p.ui < 0;
+    }
+
+    public static partial class MathP
+    {
+
     }
 }

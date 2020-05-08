@@ -1,4 +1,6 @@
-﻿using NUnitLite;
+﻿// SPDX-License-Identifier: MIT
+
+using NUnitLite;
 
 namespace System.Numerics.Posits.Tests
 {
