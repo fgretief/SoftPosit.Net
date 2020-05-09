@@ -8,6 +8,7 @@
     <PackageId>SoftPosit.Net</PackageId>
     <VersionPrefix>0.1.0</VersionPrefix>
     <Authors>Francois Retief</Authors>
+    <RepositoryUrl>https://github.com/fgretief/SoftPosit.Net/</RepositoryUrl>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
