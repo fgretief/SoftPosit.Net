@@ -43,7 +43,7 @@ jobs:
         NUGET_AUTH_TOKEN: ${{secrets.GITHUB_TOKEN}}
 
     - name: Create the NuGet package
-      run: dotnet pack --configuration Release src/SoftPosit
+      run: dotnet pack --configuration Release src/SoftPosit -p:ContinuousIntegrationBuild=true
 
     - name: Publish NuGet package to GitHub Packages
       run: dotnet nuget push src/SoftPosit/bin/Release/*.nupkg
