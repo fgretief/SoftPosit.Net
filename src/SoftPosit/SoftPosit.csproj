@@ -5,10 +5,13 @@
     <RootNamespace>System.Numerics</RootNamespace>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
     <PublishRepositoryUrl>true</PublishRepositoryUrl>
+    <IncludeSymbols>true</IncludeSymbols>
+    <SymbolPackageFormat>snupkg</SymbolPackageFormat>
     <PackageId>SoftPosit.Net</PackageId>
-    <VersionPrefix>0.1.0</VersionPrefix>
+    <VersionPrefix>0.1.1</VersionPrefix>
+    <VersionSuffix>alpha1</VersionSuffix>
     <Authors>Francois Retief</Authors>
-    <RepositoryUrl>https://github.com/fgretief/SoftPosit.Net/</RepositoryUrl>
+    <!--<RepositoryUrl>https://github.com/fgretief/SoftPosit.Net.git</RepositoryUrl>-->
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
