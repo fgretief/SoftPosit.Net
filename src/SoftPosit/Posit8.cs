@@ -1,5 +1,6 @@
 ﻿// SPDX-License-Identifier: MIT
 
+using System.Numerics.Posits.Internal;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 
@@ -118,7 +119,7 @@ namespace System.Numerics
         /// </summary>
         public static explicit operator Posit8(Quire8 value)
         {
-            throw new NotImplementedException();
+            return Native.q8_to_p8(value);
         }
 
         /// <summary>

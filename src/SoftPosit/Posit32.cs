@@ -1,5 +1,6 @@
 ﻿// SPDX-License-Identifier: MIT
 
+using System.Numerics.Posits.Internal;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 
@@ -120,7 +121,7 @@ namespace System.Numerics
         /// </summary>
         public static explicit operator Posit32(Quire32 value)
         {
-            throw new NotImplementedException();
+            return Native.q32_to_p32(value);
         }
 
         /// <summary>
