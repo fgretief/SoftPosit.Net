@@ -24,7 +24,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\SoftPosit\SoftPosit.csproj" />
+    <ProjectReference Include="..\SoftPosit.Net\SoftPosit.Net.csproj" />
   </ItemGroup>
 
 </Project>

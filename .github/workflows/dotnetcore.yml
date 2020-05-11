@@ -11,7 +11,7 @@ jobs:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        os: [windows-2019, ubuntu-latest, macOS-latest]
+        os: [windows-latest, ubuntu-latest, macOS-latest]
     steps:
     - uses: actions/checkout@v2
 
@@ -43,7 +43,7 @@ jobs:
         NUGET_AUTH_TOKEN: ${{secrets.GITHUB_TOKEN}}
 
     - name: Create the NuGet package
-      run: dotnet pack --configuration Release src/SoftPosit -p:ContinuousIntegrationBuild=true
+      run: dotnet pack --configuration Release src/SoftPosit.Net -p:ContinuousIntegrationBuild=true
 
     - name: Publish NuGet package to GitHub Packages
-      run: dotnet nuget push src\SoftPosit\bin\Release\*.nupkg --api-key ${{secrets.GITHUB_TOKEN}}
+      run: dotnet nuget push src\SoftPosit.Net\bin\Release\*.nupkg --api-key ${{secrets.GITHUB_TOKEN}}

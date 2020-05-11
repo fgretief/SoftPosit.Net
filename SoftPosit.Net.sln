@@ -9,7 +9,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		README.md = README.md
 	EndProjectSection
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SoftPosit", "src\SoftPosit\SoftPosit.csproj", "{782C2B83-A0F5-4149-87BB-437E64DBBB9F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SoftPosit.Net", "src\SoftPosit.Net\SoftPosit.Net.csproj", "{782C2B83-A0F5-4149-87BB-437E64DBBB9F}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SoftPosit.Tests", "src\SoftPosit.Tests\SoftPosit.Tests.csproj", "{9957D55B-2425-43CD-8B11-4D66F2F470FF}"
 EndProject
