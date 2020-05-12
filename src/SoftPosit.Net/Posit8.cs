@@ -1,11 +1,12 @@
 ﻿// SPDX-License-Identifier: MIT
 
-using System.Numerics.Posits.Internal;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 
 namespace System.Numerics
 {
+    using static Posits.Internal.Native;
+
     // ReSharper disable InconsistentNaming
 
     /// <summary>
@@ -76,7 +77,7 @@ namespace System.Numerics
         /// <returns>The value of <paramref name="a"/> incremented by 1.</returns>
         public static Posit8 operator ++(Posit8 a)
         {
-            return Native.p8_add(a, One);
+            return p8_add(a, One);
         }
 
         /// <summary>
@@ -87,7 +88,7 @@ namespace System.Numerics
         /// <returns>The result of adding <paramref name="a"/> and <paramref name="b"/>.</returns>
         public static Posit8 operator +(Posit8 a, Posit8 b)
         {
-            return Native.p8_add(a, b);
+            return p8_add(a, b);
         }
 
         /// <summary>
@@ -112,7 +113,7 @@ namespace System.Numerics
         /// <returns>The value of <paramref name="a"/> decremented by 1.</returns>
         public static Posit8 operator --(Posit8 a)
         {
-            return Native.p8_sub(a, One);
+            return p8_sub(a, One);
         }
 
         /// <summary>
@@ -123,7 +124,7 @@ namespace System.Numerics
         /// <returns>The result of subtracting <paramref name="a"/> from <paramref name="b"/>.</returns>
         public static Posit8 operator -(Posit8 a, Posit8 b)
         {
-            return Native.p8_sub(a, b);
+            return p8_sub(a, b);
         }
 
         /// <summary>
@@ -134,7 +135,7 @@ namespace System.Numerics
         /// <returns>The result of multiplying <paramref name="a"/> by <paramref name="b"/>.</returns>
         public static Posit8 operator *(Posit8 a, Posit8 b)
         {
-            return Native.p8_mul(a, b);
+            return p8_mul(a, b);
         }
 
         /// <summary>
@@ -145,7 +146,7 @@ namespace System.Numerics
         /// <returns>The result of dividing <paramref name="a"/> by <paramref name="b"/>.</returns>
         public static Posit8 operator /(Posit8 a, Posit8 b)
         {
-            return Native.p8_div(a, b);
+            return p8_div(a, b);
         }
 
         /// <summary>
@@ -156,7 +157,7 @@ namespace System.Numerics
         /// <returns>The remainder resulting from dividing d1 by d2.</returns>
         public static Posit8 operator %(Posit8 a, Posit8 b)
         {
-            return Native.p8_mod(a, b);
+            return p8_mod(a, b);
         }
 
         /// <summary>
@@ -212,11 +213,131 @@ namespace System.Numerics
         }
 
         /// <summary>
+        /// Defines an implicit conversion of a 32-bit signed integer to a <see cref="Posit8"/>.
+        /// </summary>
+        /// <param name="value">The 32-bit signed integer to convert.</param>
+        /// <returns>The converted <see cref="Posit8"/> number.</returns>
+        public static implicit operator Posit8(int value)
+        {
+            return i32_to_p8(value);
+        }
+
+        /// <summary>
+        /// Defines an implicit conversion of a 32-bit unsigned integer to a <see cref="Posit8"/>.
+        /// </summary>
+        /// <param name="value">The 32-bit unsigned integer to convert.</param>
+        /// <returns>The converted <see cref="Posit8"/> number.</returns>
+        public static implicit operator Posit8(uint value)
+        {
+            return ui32_to_p8(value);
+        }
+
+        /// <summary>
+        /// Defines an implicit conversion of a 64-bit signed integer to a <see cref="Posit8"/>.
+        /// </summary>
+        /// <param name="value">The 64-bit signed integer to convert.</param>
+        /// <returns>The converted <see cref="Posit8"/> number.</returns>
+        public static implicit operator Posit8(long value)
+        {
+            return i64_to_p8(value);
+        }
+
+        /// <summary>
+        /// Defines an implicit conversion of a 64-bit unsigned integer to a <see cref="Posit8"/>.
+        /// </summary>
+        /// <param name="value">The 64-bit unsigned integer to convert.</param>
+        /// <returns>The converted <see cref="Posit8"/> number.</returns>
+        public static implicit operator Posit8(ulong value)
+        {
+            return ui64_to_p8(value);
+        }
+
+        /// <summary>
+        /// Defines an implicit conversion of a single-precision floating-point number to a <see cref="Posit8"/>.
+        /// </summary>
+        /// <param name="value">The single-precision floating-point number to convert.</param>
+        /// <returns>The converted single-precision floating point number.</returns>
+        public static implicit operator Posit8(float value)
+        {
+            return f32_to_p8(value);
+        }
+
+        /// <summary>
+        /// Defines an implicit conversion of a double-precision floating-point number to a <see cref="Posit8"/>.
+        /// </summary>
+        /// <param name="value">The double-precision floating-point number to convert.</param>
+        /// <returns>The converted double-precision floating point number.</returns>
+        public static implicit operator Posit8(double value)
+        {
+            return f64_to_p8(value);
+        }
+
+        /// <summary>
+        /// Defines an explicit conversion of a <see cref="Posit8"/> to a 32-bit signed integer.
+        /// </summary>
+        /// <param name="value">The value to convert.</param>
+        /// <returns>A 32-bit signed integer that represents the converted <see cref="Posit8"/>.</returns>
+        public static explicit operator int(Posit8 value)
+        {
+            return p8_to_i32(value);
+        }
+
+        /// <summary>
+        /// Defines an explicit conversion of a <see cref="Posit8"/> to a 32-bit unsigned integer.
+        /// </summary>
+        /// <param name="value">The value to convert.</param>
+        /// <returns>A 32-bit unsigned integer that represents the converted <see cref="Posit8"/>.</returns>
+        public static explicit operator uint(Posit8 value)
+        {
+            return p8_to_ui32(value);
+        }
+
+        /// <summary>
+        /// Defines an explicit conversion of a <see cref="Posit8"/> to a 64-bit signed integer.
+        /// </summary>
+        /// <param name="value">The value to convert.</param>
+        /// <returns>A 64-bit signed integer that represents the converted <see cref="Posit8"/>.</returns>
+        public static explicit operator long(Posit8 value)
+        {
+            return p8_to_i64(value);
+        }
+
+        /// <summary>
+        /// Defines an explicit conversion of a <see cref="Posit8"/> to a 64-bit unsigned integer.
+        /// </summary>
+        /// <param name="value">The value to convert.</param>
+        /// <returns>A 64-bit unsigned integer that represents the converted <see cref="Posit8"/>.</returns>
+        public static explicit operator ulong(Posit8 value)
+        {
+            return p8_to_ui64(value);
+        }
+
+        /// <summary>
+        /// Defines an explicit conversion of a <see cref="Posit8"/> to a single-precision floating-point number.
+        /// </summary>
+        /// <param name="value">The value to convert.</param>
+        /// <returns>A single-precision floating-point number that represents the converted <see cref="Posit8"/>.</returns>
+        public static explicit operator float(Posit8 value)
+        {
+            return p8_to_f32(value);
+        }
+
+        /// <summary>
+        /// Defines an explicit conversion of a <see cref="Posit8"/> to a double-precision floating-point number.
+        /// </summary>
+        /// <param name="value">The value to convert.</param>
+        /// <returns>A double-precision floating-point number that represents the converted <see cref="Posit8"/>.</returns>
+        public static explicit operator double(Posit8 value)
+        {
+            return p8_to_f64(value);
+        }
+
+        /// <summary>
         /// Defines an explicit conversion of a <see cref="Quire8"/> accumulator to a <see cref="Posit8"/> number.
         /// </summary>
         public static explicit operator Posit8(Quire8 value)
         {
-            return Native.q8_to_p8(value);
+            return q8_to_p8(value);
         }
 
         /// <summary>

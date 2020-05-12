@@ -1,11 +1,12 @@
 ﻿// SPDX-License-Identifier: MIT
 
-using System.Numerics.Posits.Internal;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 
 namespace System.Numerics
 {
+    using static Posits.Internal.Native;
+
     // ReSharper disable InconsistentNaming
 
     /// <summary>
@@ -78,7 +79,7 @@ namespace System.Numerics
         /// <returns>The value of <paramref name="a"/> incremented by 1.</returns>
         public static Posit64 operator ++(Posit64 a)
         {
-            return Native.p64_add(a, One);
+            return p64_add(a, One);
         }
 
         /// <summary>
@@ -89,7 +90,7 @@ namespace System.Numerics
         /// <returns>The result of adding <paramref name="a"/> and <paramref name="b"/>.</returns>
         public static Posit64 operator +(Posit64 a, Posit64 b)
         {
-            return Native.p64_add(a, b);
+            return p64_add(a, b);
         }
 
         /// <summary>
@@ -114,7 +115,7 @@ namespace System.Numerics
         /// <returns>The value of <paramref name="a"/> decremented by 1.</returns>
         public static Posit64 operator --(Posit64 a)
         {
-            return Native.p64_sub(a, One);
+            return p64_sub(a, One);
         }
 
         /// <summary>
@@ -125,7 +126,7 @@ namespace System.Numerics
         /// <returns>The result of subtracting <paramref name="a"/> from <paramref name="b"/>.</returns>
         public static Posit64 operator -(Posit64 a, Posit64 b)
         {
-            return Native.p64_sub(a, b);
+            return p64_sub(a, b);
         }
 
         /// <summary>
@@ -136,7 +137,7 @@ namespace System.Numerics
         /// <returns>The result of multiplying <paramref name="a"/> by <paramref name="b"/>.</returns>
         public static Posit64 operator *(Posit64 a, Posit64 b)
         {
-            return Native.p64_mul(a, b);
+            return p64_mul(a, b);
         }
 
         /// <summary>
@@ -147,7 +148,7 @@ namespace System.Numerics
         /// <returns>The result of dividing <paramref name="a"/> by <paramref name="b"/>.</returns>
         public static Posit64 operator /(Posit64 a, Posit64 b)
         {
-            return Native.p64_div(a, b);
+            return p64_div(a, b);
         }
 
         /// <summary>
@@ -158,7 +159,7 @@ namespace System.Numerics
         /// <returns>The remainder resulting from dividing d1 by d2.</returns>
         public static Posit64 operator %(Posit64 a, Posit64 b)
         {
-            return Native.p64_mod(a, b);
+            return p64_mod(a, b);
         }
 
         /// <summary>
@@ -214,11 +215,131 @@ namespace System.Numerics
         }
 
         /// <summary>
+        /// Defines an implicit conversion of a 32-bit signed integer to a <see cref="Posit64"/>.
+        /// </summary>
+        /// <param name="value">The 32-bit signed integer to convert.</param>
+        /// <returns>The converted <see cref="Posit64"/> number.</returns>
+        public static implicit operator Posit64(int value)
+        {
+            return i32_to_p64(value);
+        }
+
+        /// <summary>
+        /// Defines an implicit conversion of a 32-bit unsigned integer to a <see cref="Posit64"/>.
+        /// </summary>
+        /// <param name="value">The 32-bit unsigned integer to convert.</param>
+        /// <returns>The converted <see cref="Posit64"/> number.</returns>
+        public static implicit operator Posit64(uint value)
+        {
+            return ui32_to_p64(value);
+        }
+
+        /// <summary>
+        /// Defines an implicit conversion of a 64-bit signed integer to a <see cref="Posit64"/>.
+        /// </summary>
+        /// <param name="value">The 64-bit signed integer to convert.</param>
+        /// <returns>The converted <see cref="Posit64"/> number.</returns>
+        public static implicit operator Posit64(long value)
+        {
+            return i64_to_p64(value);
+        }
+
+        /// <summary>
+        /// Defines an implicit conversion of a 64-bit unsigned integer to a <see cref="Posit64"/>.
+        /// </summary>
+        /// <param name="value">The 64-bit unsigned integer to convert.</param>
+        /// <returns>The converted <see cref="Posit64"/> number.</returns>
+        public static implicit operator Posit64(ulong value)
+        {
+            return ui64_to_p64(value);
+        }
+
+        /// <summary>
+        /// Defines an implicit conversion of a single-precision floating-point number to a <see cref="Posit64"/>.
+        /// </summary>
+        /// <param name="value">The single-precision floating-point number to convert.</param>
+        /// <returns>The converted single-precision floating point number.</returns>
+        public static implicit operator Posit64(float value)
+        {
+            return f32_to_p64(value);
+        }
+
+        /// <summary>
+        /// Defines an implicit conversion of a double-precision floating-point number to a <see cref="Posit64"/>.
+        /// </summary>
+        /// <param name="value">The double-precision floating-point number to convert.</param>
+        /// <returns>The converted double-precision floating point number.</returns>
+        public static implicit operator Posit64(double value)
+        {
+            return f64_to_p64(value);
+        }
+
+        /// <summary>
+        /// Defines an explicit conversion of a <see cref="Posit64"/> to a 32-bit signed integer.
+        /// </summary>
+        /// <param name="value">The value to convert.</param>
+        /// <returns>A 32-bit signed integer that represents the converted <see cref="Posit64"/>.</returns>
+        public static explicit operator int(Posit64 value)
+        {
+            return p64_to_i32(value);
+        }
+
+        /// <summary>
+        /// Defines an explicit conversion of a <see cref="Posit64"/> to a 32-bit unsigned integer.
+        /// </summary>
+        /// <param name="value">The value to convert.</param>
+        /// <returns>A 32-bit unsigned integer that represents the converted <see cref="Posit64"/>.</returns>
+        public static explicit operator uint(Posit64 value)
+        {
+            return p64_to_ui32(value);
+        }
+
+        /// <summary>
+        /// Defines an explicit conversion of a <see cref="Posit64"/> to a 64-bit signed integer.
+        /// </summary>
+        /// <param name="value">The value to convert.</param>
+        /// <returns>A 64-bit signed integer that represents the converted <see cref="Posit64"/>.</returns>
+        public static explicit operator long(Posit64 value)
+        {
+            return p64_to_i64(value);
+        }
+
+        /// <summary>
+        /// Defines an explicit conversion of a <see cref="Posit64"/> to a 64-bit unsigned integer.
+        /// </summary>
+        /// <param name="value">The value to convert.</param>
+        /// <returns>A 64-bit unsigned integer that represents the converted <see cref="Posit64"/>.</returns>
+        public static explicit operator ulong(Posit64 value)
+        {
+            return p64_to_ui64(value);
+        }
+
+        /// <summary>
+        /// Defines an explicit conversion of a <see cref="Posit64"/> to a single-precision floating-point number.
+        /// </summary>
+        /// <param name="value">The value to convert.</param>
+        /// <returns>A single-precision floating-point number that represents the converted <see cref="Posit64"/>.</returns>
+        public static explicit operator float(Posit64 value)
+        {
+            return p64_to_f32(value);
+        }
+
+        /// <summary>
+        /// Defines an explicit conversion of a <see cref="Posit64"/> to a double-precision floating-point number.
+        /// </summary>
+        /// <param name="value">The value to convert.</param>
+        /// <returns>A double-precision floating-point number that represents the converted <see cref="Posit64"/>.</returns>
+        public static explicit operator double(Posit64 value)
+        {
+            return p64_to_f64(value);
+        }
+
+        /// <summary>
         /// Defines an explicit conversion of a <see cref="Quire64"/> accumulator to a <see cref="Posit64"/> number.
         /// </summary>
         public static explicit operator Posit64(Quire64 value)
         {
-            return Native.q64_to_p64(value);
+            return q64_to_p64(value);
         }
 
         /// <summary>
