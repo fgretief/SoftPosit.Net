@@ -53,6 +53,9 @@ namespace System.Numerics
         /// <summary>Half (½).</summary>
         public static readonly Posit64 Half = new Posit64(0x3400_0000_0000_0000);
 
+        /// <summary>Minus one (-1).</summary>
+        public static readonly Posit64 MinusOne = new Posit64(0xC000_0000_0000_0000);
+
         /// <summary>Largest finite value (?value?).</summary>
         public static readonly Posit64 MaxValue = new Posit64(+0x7FFF_FFFF_FFFF_FFFF);
 

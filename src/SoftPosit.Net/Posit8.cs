@@ -51,6 +51,9 @@ namespace System.Numerics
         /// <summary>Half (½).</summary>
         public static readonly Posit8 Half = new Posit8(0x20);
 
+        /// <summary>Minus one (-1).</summary>
+        public static readonly Posit8 MinusOne = new Posit8(0xC0);
+
         /// <summary>Largest finite value (64).</summary>
         public static readonly Posit8 MaxValue = new Posit8(+0x7F);
 

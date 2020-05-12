@@ -51,6 +51,9 @@ namespace System.Numerics
         /// <summary>Half (½).</summary>
         public static readonly Posit16 Half = new Posit16(0x3000);
 
+        /// <summary>Minus one (-1).</summary>
+        public static readonly Posit16 MinusOne = new Posit16(0xC000);
+
         /// <summary>Largest finite value (268435456).</summary>
         public static readonly Posit16 MaxValue = new Posit16(+0x7FFF);
 
