@@ -425,6 +425,14 @@ namespace System.Numerics
         /// <summary>Determines whether the specified value is negative.</summary>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static bool IsNegative(Posit16 p) => (short)p.ui < 0;
+
+        /// <summary>Determines whether the specified value is zero or NaR.</summary>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static bool IsZeroOrNaR(Posit16 p)
+        {
+            var mask = 1 << (Posit16.nbits - 1);
+            return (p.ui & (mask - 1)) == 0;
+        }
     }
 
     public static partial class MathP

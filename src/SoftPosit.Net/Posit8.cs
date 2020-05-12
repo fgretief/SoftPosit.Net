@@ -427,6 +427,14 @@ namespace System.Numerics
         /// <summary>Determines whether the specified value is negative.</summary>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static bool IsNegative(Posit8 p) => (sbyte)p.ui < 0;
+
+        /// <summary>Determines whether the specified value is zero or NaR.</summary>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static bool IsZeroOrNaR(Posit8 p)
+        {
+            var mask = 1 << (Posit8.nbits - 1);
+            return (p.ui & (mask - 1)) == 0;
+        }
     }
 
     /// <summary>
