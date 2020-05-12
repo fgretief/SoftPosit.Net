@@ -65,6 +65,104 @@ namespace System.Numerics
         public static readonly Posit32 Infinity = NaR;
 
         /// <summary>
+        /// Returns the value of the <see cref="Posit32"/> operand (the sign of the operand is unchanged).
+        /// </summary>
+        /// <param name="a">The operand to return.</param>
+        /// <returns>The value of the operand, <paramref name="a"/>.</returns>
+        public static Posit32 operator +(Posit32 a) => a;
+
+        /// <summary>
+        /// Increments the <see cref="Posit32"/> operand by 1.
+        /// </summary>
+        /// <param name="a">The value to increment.</param>
+        /// <returns>The value of <paramref name="a"/> incremented by 1.</returns>
+        public static Posit32 operator ++(Posit32 a)
+        {
+            return Native.p32_add(a, One);
+        }
+
+        /// <summary>
+        /// Adds two specified <see cref="Posit32"/> values.
+        /// </summary>
+        /// <param name="a">The first value to add.</param>
+        /// <param name="b">The second value to add.</param>
+        /// <returns>The result of adding <paramref name="a"/> and <paramref name="b"/>.</returns>
+        public static Posit32 operator +(Posit32 a, Posit32 b)
+        {
+            return Native.p32_add(a, b);
+        }
+
+        /// <summary>
+        /// Negates the value of the specified <see cref="Posit32"/> operand.
+        /// </summary>
+        /// <param name="a">The value to negate.</param>
+        /// <returns>The result of <paramref name="a"/> multiplied by negative one (-1).</returns>
+        public static Posit32 operator -(Posit32 a)
+        {
+            var mask = 1u << (nbits - 1);
+
+            if ((a.ui & ~mask) == 0)
+                return a; // Zero or NaR
+
+            return new Posit32(a.ui ^ mask);
+        }
+
+        /// <summary>
+        /// Decrements the <see cref="Posit32"/> operand by one.
+        /// </summary>
+        /// <param name="a">The value to decrement.</param>
+        /// <returns>The value of <paramref name="a"/> decremented by 1.</returns>
+        public static Posit32 operator --(Posit32 a)
+        {
+            return Native.p32_sub(a, One);
+        }
+
+        /// <summary>
+        /// Subtracts two specified <see cref="Posit32"/> values.
+        /// </summary>
+        /// <param name="a">The minuend.</param>
+        /// <param name="b">The subtrahend.</param>
+        /// <returns>The result of subtracting <paramref name="a"/> from <paramref name="b"/>.</returns>
+        public static Posit32 operator -(Posit32 a, Posit32 b)
+        {
+            return Native.p32_sub(a, b);
+        }
+
+        /// <summary>
+        /// Multiplies two specified <see cref="Posit32"/> values.
+        /// </summary>
+        /// <param name="a">The first value to multiply.</param>
+        /// <param name="b">The second value to multiply.</param>
+        /// <returns>The result of multiplying <paramref name="a"/> by <paramref name="b"/>.</returns>
+        public static Posit32 operator *(Posit32 a, Posit32 b)
+        {
+            return Native.p32_mul(a, b);
+        }
+
+        /// <summary>
+        /// Divides two specified <see cref="Posit32"/> values.
+        /// </summary>
+        /// <param name="a">The dividend.</param>
+        /// <param name="b">The divisor.</param>
+        /// <returns>The result of dividing <paramref name="a"/> by <paramref name="b"/>.</returns>
+        public static Posit32 operator /(Posit32 a, Posit32 b)
+        {
+            return Native.p32_div(a, b);
+        }
+
+        /// <summary>
+        /// Returns the remainder resulting from dividing two specified <see cref="Posit32"/> values.
+        /// </summary>
+        /// <param name="a">The dividend.</param>
+        /// <param name="b">The divisor.</param>
+        /// <returns>The remainder resulting from dividing d1 by d2.</returns>
+        public static Posit32 operator %(Posit32 a, Posit32 b)
+        {
+            return Native.p32_mod(a, b);
+        }
+
+
+        /// <summary>
         /// Returns a value that indicates whether two specified <see cref="Posit32"/> values are equal.
         /// </summary>
         public static bool operator ==(Posit32 a, Posit32 b)

@@ -65,6 +65,103 @@ namespace System.Numerics
         public static readonly Posit64 Infinity = NaR;
 
         /// <summary>
+        /// Returns the value of the <see cref="Posit64"/> operand (the sign of the operand is unchanged).
+        /// </summary>
+        /// <param name="a">The operand to return.</param>
+        /// <returns>The value of the operand, <paramref name="a"/>.</returns>
+        public static Posit64 operator +(Posit64 a) => a;
+
+        /// <summary>
+        /// Increments the <see cref="Posit64"/> operand by 1.
+        /// </summary>
+        /// <param name="a">The value to increment.</param>
+        /// <returns>The value of <paramref name="a"/> incremented by 1.</returns>
+        public static Posit64 operator ++(Posit64 a)
+        {
+            return Native.p64_add(a, One);
+        }
+
+        /// <summary>
+        /// Adds two specified <see cref="Posit64"/> values.
+        /// </summary>
+        /// <param name="a">The first value to add.</param>
+        /// <param name="b">The second value to add.</param>
+        /// <returns>The result of adding <paramref name="a"/> and <paramref name="b"/>.</returns>
+        public static Posit64 operator +(Posit64 a, Posit64 b)
+        {
+            return Native.p64_add(a, b);
+        }
+
+        /// <summary>
+        /// Negates the value of the specified <see cref="Posit64"/> operand.
+        /// </summary>
+        /// <param name="a">The value to negate.</param>
+        /// <returns>The result of <paramref name="a"/> multiplied by negative one (-1).</returns>
+        public static Posit64 operator -(Posit64 a)
+        {
+            var mask = 1ul << (nbits - 1);
+
+            if ((a.ui & ~mask) == 0)
+                return a; // Zero or NaR
+
+            return new Posit64(a.ui ^ mask);
+        }
+
+        /// <summary>
+        /// Decrements the <see cref="Posit64"/> operand by one.
+        /// </summary>
+        /// <param name="a">The value to decrement.</param>
+        /// <returns>The value of <paramref name="a"/> decremented by 1.</returns>
+        public static Posit64 operator --(Posit64 a)
+        {
+            return Native.p64_sub(a, One);
+        }
+
+        /// <summary>
+        /// Subtracts two specified <see cref="Posit64"/> values.
+        /// </summary>
+        /// <param name="a">The minuend.</param>
+        /// <param name="b">The subtrahend.</param>
+        /// <returns>The result of subtracting <paramref name="a"/> from <paramref name="b"/>.</returns>
+        public static Posit64 operator -(Posit64 a, Posit64 b)
+        {
+            return Native.p64_sub(a, b);
+        }
+
+        /// <summary>
+        /// Multiplies two specified <see cref="Posit64"/> values.
+        /// </summary>
+        /// <param name="a">The first value to multiply.</param>
+        /// <param name="b">The second value to multiply.</param>
+        /// <returns>The result of multiplying <paramref name="a"/> by <paramref name="b"/>.</returns>
+        public static Posit64 operator *(Posit64 a, Posit64 b)
+        {
+            return Native.p64_mul(a, b);
+        }
+
+        /// <summary>
+        /// Divides two specified <see cref="Posit64"/> values.
+        /// </summary>
+        /// <param name="a">The dividend.</param>
+        /// <param name="b">The divisor.</param>
+        /// <returns>The result of dividing <paramref name="a"/> by <paramref name="b"/>.</returns>
+        public static Posit64 operator /(Posit64 a, Posit64 b)
+        {
+            return Native.p64_div(a, b);
+        }
+
+        /// <summary>
+        /// Returns the remainder resulting from dividing two specified <see cref="Posit64"/> values.
+        /// </summary>
+        /// <param name="a">The dividend.</param>
+        /// <param name="b">The divisor.</param>
+        /// <returns>The remainder resulting from dividing d1 by d2.</returns>
+        public static Posit64 operator %(Posit64 a, Posit64 b)
+        {
+            return Native.p64_mod(a, b);
+        }
+
+        /// <summary>
         /// Returns a value that indicates whether two specified <see cref="Posit64"/> values are equal.
         /// </summary>
         public static bool operator ==(Posit64 a, Posit64 b)
@@ -125,12 +222,12 @@ namespace System.Numerics
         }
 
         /// <summary>
-        /// Compares this instance to a specified <see cref="Posit16"/> number
+        /// Compares this instance to a specified <see cref="Posit64"/> number
         /// and returns an integer that indicates whether the value of this
         /// instance is less than, equal to, or greater than the value of the
         /// specified number.
         /// </summary>
-        /// <param name="other">A <see cref="Posit16"/> number to compare.</param>
+        /// <param name="other">A <see cref="Posit64"/> number to compare.</param>
         /// <returns>A signed number indicating the relative values of this instance and value.</returns>
         public int CompareTo(Posit64 other)
         {
