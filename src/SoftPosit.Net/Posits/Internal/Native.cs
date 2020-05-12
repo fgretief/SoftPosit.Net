@@ -69,6 +69,10 @@ namespace System.Numerics.Posits.Internal
         [DllImport(SoftPosit)]
         public static extern posit8_t q8_to_p8(in quire8_t q);
 
+        public static quire8_t q8_fdp_add(quire8_t q, in posit8_t a, in posit8_t b) => throw new NotImplementedException();
+
+        public static quire8_t q8_fdp_sub(quire8_t q, in posit8_t a, in posit8_t b) => throw new NotImplementedException();
+
         #endregion
 
         #region Posit (nbits=16, es=1)
@@ -118,6 +122,10 @@ namespace System.Numerics.Posits.Internal
 
         [DllImport(SoftPosit)]
         public static extern posit16_t q16_to_p16(in quire16_t q);
+
+        public static quire16_t q16_fdp_add(quire16_t q, in posit16_t a, in posit16_t b) => throw new NotImplementedException();
+
+        public static quire16_t q16_fdp_sub(quire16_t q, in posit16_t a, in posit16_t b) => throw new NotImplementedException();
 
         #endregion
 
@@ -169,6 +177,10 @@ namespace System.Numerics.Posits.Internal
         [DllImport(SoftPosit)]
         public static extern posit32_t q32_to_p32(in quire32_t q);
 
+        public static quire32_t q32_fdp_add(quire32_t q, in posit32_t a, in posit32_t b) => throw new NotImplementedException();
+
+        public static quire32_t q32_fdp_sub(quire32_t q, in posit32_t a, in posit32_t b) => throw new NotImplementedException();
+
         #endregion
 
         #region Posit (nbits=64, es=3)
@@ -217,6 +229,10 @@ namespace System.Numerics.Posits.Internal
 
 
         public static posit64_t q64_to_p64(in quire64_t q) => throw new NotImplementedException();
+
+        public static quire64_t q64_fdp_add(quire64_t q, in posit64_t a, in posit64_t b) => throw new NotImplementedException();
+
+        public static quire64_t q64_fdp_sub(quire64_t q, in posit64_t a, in posit64_t b) => throw new NotImplementedException();
 
         #endregion
     }

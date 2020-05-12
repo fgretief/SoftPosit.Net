@@ -4,6 +4,8 @@ using System.Runtime.InteropServices;
 
 namespace System.Numerics
 {
+    using static Posits.Internal.Native;
+
     /// <summary>
     /// Quire for 32-bit Posit values
     /// </summary>
@@ -41,40 +43,40 @@ namespace System.Numerics
         /// Multiply specified value with one and add to <see cref="Quire32"/> accumulator register.
         /// <para>(result = <paramref name="q"/> + <paramref name="a"/> * 1)</para>
         /// </summary>
-        public static Posit32 operator +(Quire32 q, Posit32 a)
+        public static Quire32 operator +(Quire32 q, Posit32 a)
         {
             var b = Posit32.One;
-            throw new NotImplementedException();
+            return q32_fdp_add(q, a, b);
         }
 
         /// <summary>
         /// Multiply specified tuple values and add to <see cref="Quire32"/> accumulator register.
         /// <para>(result = <paramref name="q"/> + a * b)</para>
         /// </summary>
-        public static Posit32 operator +(Quire32 q, ValueTuple<Posit32, Posit32> aMulB)
+        public static Quire32 operator +(Quire32 q, ValueTuple<Posit32, Posit32> aMulB)
         {
             var (a, b) = aMulB;
-            throw new NotImplementedException();
+            return q32_fdp_add(q, a, b);
         }
 
         /// <summary>
         /// Multiply specified value with one and subtract from <see cref="Quire32"/> accumulator register.
         /// <para>(result = <paramref name="q"/> - a * 1)</para>
         /// </summary>
-        public static Posit32 operator -(Quire32 q, Posit32 a)
+        public static Quire32 operator -(Quire32 q, Posit32 a)
         {
             var b = Posit32.One;
-            throw new NotImplementedException();
+            return q32_fdp_sub(q, a, b);
         }
 
         /// <summary>
         /// Multiply specified tuple values and subtract from <see cref="Quire64"/> accumulator register.
         /// <para>(result = <paramref name="q"/> - a * b)</para>
         /// </summary>
-        public static Posit32 operator -(Quire32 q, ValueTuple<Posit32, Posit32> aMulB)
+        public static Quire32 operator -(Quire32 q, ValueTuple<Posit32, Posit32> aMulB)
         {
             var (a, b) = aMulB;
-            throw new NotImplementedException();
+            return q32_fdp_sub(q, a, b);
         }
 
         // TODO: add more operators

@@ -4,6 +4,8 @@ using System.Runtime.InteropServices;
 
 namespace System.Numerics
 {
+    using static Posits.Internal.Native;
+
     /// <summary>
     /// Quire for 64-bit Posit values
     /// </summary>
@@ -44,7 +46,7 @@ namespace System.Numerics
         public static Quire64 operator +(Quire64 q, Posit64 a)
         {
             var b = Posit64.One;
-            throw new NotImplementedException();
+            return q64_fdp_add(q, a, b);
         }
 
         /// <summary>
@@ -54,7 +56,7 @@ namespace System.Numerics
         public static Quire64 operator +(Quire64 q, ValueTuple<Posit64, Posit64> aMulB)
         {
             var (a, b) = aMulB;
-            throw new NotImplementedException();
+            return q64_fdp_add(q, a, b);
         }
 
         /// <summary>
@@ -64,7 +66,7 @@ namespace System.Numerics
         public static Quire64 operator -(Quire64 q, Posit64 a)
         {
             var b = Posit64.One;
-            throw new NotImplementedException();
+            return q64_fdp_sub(q, a, b);
         }
 
         /// <summary>
@@ -74,7 +76,7 @@ namespace System.Numerics
         public static Quire64 operator -(Quire64 q, ValueTuple<Posit64, Posit64> aMulB)
         {
             var (a, b) = aMulB;
-            throw new NotImplementedException();
+            return q64_fdp_sub(q, a, b);
         }
 
         // TODO: add more operators

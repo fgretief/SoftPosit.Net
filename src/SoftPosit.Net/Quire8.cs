@@ -4,6 +4,8 @@ using System.Runtime.InteropServices;
 
 namespace System.Numerics
 {
+    using static Posits.Internal.Native;
+
     /// <summary>
     /// Quire for 8-bit Posit values
     /// </summary>
@@ -40,40 +42,41 @@ namespace System.Numerics
         /// Multiply specified value with one and add to <see cref="Quire8"/> accumulator register.
         /// <para>(result = <paramref name="q"/> + <paramref name="a"/> * 1)</para>
         /// </summary>
-        public static Posit8 operator +(Quire8 q, Posit8 a)
+        public static Quire8 operator +(Quire8 q, Posit8 a)
         {
             var b = Posit8.One;
-            throw new NotImplementedException();
+            return q8_fdp_add(q, a, b);
         }
 
         /// <summary>
         /// Multiply specified tuple values and add to <see cref="Quire8"/> accumulator register.
         /// <para>(result = <paramref name="q"/> + a * b)</para>
         /// </summary>
-        public static Posit8 operator +(Quire8 q, ValueTuple<Posit8, Posit8> aMulB)
+        public static Quire8 operator +(Quire8 q, ValueTuple<Posit8, Posit8> aMulB)
         {
             var (a, b) = aMulB;
-            throw new NotImplementedException();
+            return q8_fdp_add(q, a, b);
         }
 
         /// <summary>
         /// Multiply specified value with one and subtract from <see cref="Quire8"/> accumulator register.
         /// <para>(result = <paramref name="q"/> - a * 1)</para>
         /// </summary>
-        public static Posit8 operator -(Quire8 q, Posit8 a)
+        public static Quire8 operator -(Quire8 q, Posit8 a)
         {
             var b = Posit8.One;
-            throw new NotImplementedException();
+            return q8_fdp_sub(q, a, b);
+
         }
 
         /// <summary>
         /// Multiply specified tuple values and subtract from <see cref="Quire8"/> accumulator register.
         /// <para>(result = <paramref name="q"/> - a * b)</para>
         /// </summary>
-        public static Posit8 operator -(Quire8 q, ValueTuple<Posit8, Posit8> aMulB)
+        public static Quire8 operator -(Quire8 q, ValueTuple<Posit8, Posit8> aMulB)
         {
             var (a, b) = aMulB;
-            throw new NotImplementedException();
+            return q8_fdp_sub(q, a, b);
         }
 
         // TODO: add more operators

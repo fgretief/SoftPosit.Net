@@ -4,6 +4,8 @@ using System.Runtime.InteropServices;
 
 namespace System.Numerics
 {
+    using static Posits.Internal.Native;
+
     /// <summary>
     /// Quire for 16-bit Posit values
     /// </summary>
@@ -41,40 +43,40 @@ namespace System.Numerics
         /// Multiply specified value with one and add to <see cref="Quire16"/> accumulator register.
         /// <para>(result = <paramref name="q"/> + <paramref name="a"/> * 1)</para>
         /// </summary>
-        public static Posit16 operator +(Quire16 q, Posit16 a)
+        public static Quire16 operator +(Quire16 q, Posit16 a)
         {
             var b = Posit16.One;
-            throw new NotImplementedException();
+            return q16_fdp_add(q, a, b);
         }
 
         /// <summary>
         /// Multiply specified tuple values and add to <see cref="Quire16"/> accumulator register.
         /// <para>(result = <paramref name="q"/> + a * b)</para>
         /// </summary>
-        public static Posit16 operator +(Quire16 q, ValueTuple<Posit16, Posit16> aMulB)
+        public static Quire16 operator +(Quire16 q, ValueTuple<Posit16, Posit16> aMulB)
         {
             var (a, b) = aMulB;
-            throw new NotImplementedException();
+            return q16_fdp_add(q, a, b);
         }
 
         /// <summary>
         /// Multiply specified value with one and subtract from <see cref="Quire16"/> accumulator register.
         /// <para>(result = <paramref name="q"/> - a * 1)</para>
         /// </summary>
-        public static Posit16 operator -(Quire16 q, Posit16 a)
+        public static Quire16 operator -(Quire16 q, Posit16 a)
         {
             var b = Posit16.One;
-            throw new NotImplementedException();
+            return q16_fdp_sub(q, a, b);
         }
 
         /// <summary>
         /// Multiply specified tuple values and subtract from <see cref="Quire16"/> accumulator register.
         /// <para>(result = <paramref name="q"/> - a * b)</para>
         /// </summary>
-        public static Posit16 operator -(Quire16 q, ValueTuple<Posit16, Posit16> aMulB)
+        public static Quire16 operator -(Quire16 q, ValueTuple<Posit16, Posit16> aMulB)
         {
             var (a, b) = aMulB;
-            throw new NotImplementedException();
+            return q16_fdp_sub(q, a, b);
         }
 
         // TODO: add more operators
