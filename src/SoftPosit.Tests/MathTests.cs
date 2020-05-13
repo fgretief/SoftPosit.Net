@@ -56,7 +56,7 @@ namespace System.Numerics.Posits.Tests
             Assert.That(Math.CopySign(0, -1), Is.EqualTo(0));
             Assert.That(Math.CopySign(1, 0), Is.EqualTo(1));
             Assert.That(Math.CopySign(-1, 0), Is.EqualTo(1));
-            
+
             Assert.That(Math.CopySign(Double.NaN, 1), Is.EqualTo(Double.NaN));
             Assert.That(Math.CopySign(Double.NaN, -1), Is.EqualTo(Double.NaN));
             Assert.That(Math.CopySign(1, Double.NaN), Is.EqualTo(-1));
@@ -137,6 +137,54 @@ namespace System.Numerics.Posits.Tests
             Assert.That(CopySign(Posit64.NaR, Posit64.MinusOne), Is.EqualTo(Posit64.NaR));
             Assert.That(CopySign(Posit64.One, Posit64.NaR), Is.EqualTo(Posit64.MinusOne));
             Assert.That(CopySign(Posit64.MinusOne, Posit64.NaR), Is.EqualTo(Posit64.MinusOne));
+        }
+
+        [Test]
+        public void TestSign_Double()
+        {
+            Assert.That(Math.Sign(1.0), Is.EqualTo(+1));
+            Assert.That(Math.Sign(-1.0), Is.EqualTo(-1));
+            Assert.That(Math.Sign(0.0), Is.EqualTo(0));
+
+            // ReSharper disable once ReturnValueOfPureMethodIsNotUsed
+            var ex = Assert.Throws<ArithmeticException>(() => Math.Sign(Double.NaN));
+            Assert.That(ex.Message, Is.EqualTo("Function does not accept floating point Not-a-Number values."));
+        }
+
+        [Test]
+        public void TestSign_Posit8()
+        {
+            Assert.That(Sign(Posit8.One), Is.EqualTo(+1));
+            Assert.That(Sign(Posit8.MinusOne), Is.EqualTo(-1));
+            Assert.That(Sign(Posit8.Zero), Is.EqualTo(0));
+            Assert.That(Sign(Posit8.NaR), Is.EqualTo(0));
+        }
+
+        [Test]
+        public void TestSign_Posit16()
+        {
+            Assert.That(Sign(Posit16.One), Is.EqualTo(+1));
+            Assert.That(Sign(Posit16.MinusOne), Is.EqualTo(-1));
+            Assert.That(Sign(Posit16.Zero), Is.EqualTo(0));
+            Assert.That(Sign(Posit16.NaR), Is.EqualTo(0));
+        }
+
+        [Test]
+        public void TestSign_Posit32()
+        {
+            Assert.That(Sign(Posit32.One), Is.EqualTo(+1));
+            Assert.That(Sign(Posit32.MinusOne), Is.EqualTo(-1));
+            Assert.That(Sign(Posit32.Zero), Is.EqualTo(0));
+            Assert.That(Sign(Posit32.NaR), Is.EqualTo(0));
+        }
+
+        [Test]
+        public void TestSign_Posit64()
+        {
+            Assert.That(Sign(Posit64.One), Is.EqualTo(+1));
+            Assert.That(Sign(Posit64.MinusOne), Is.EqualTo(-1));
+            Assert.That(Sign(Posit64.Zero), Is.EqualTo(0));
+            Assert.That(Sign(Posit64.NaR), Is.EqualTo(0));
         }
     }
 }

@@ -508,6 +508,22 @@ namespace System.Numerics
         }
 
         /// <summary>
+        /// Returns an integer that indicates the sign of a <see cref="Posit32"/> number.
+        /// </summary>
+        /// <param name="x">A signed number.</param>
+        /// <returns>A number that indicates the sign of <paramref name="x"/></returns>
+        public static int Sign(Posit32 x)
+        {
+            if ((x.ui & ~Posit32.SignMask) == 0)
+                return 0; // Zero or NaR
+
+            if ((x.ui & Posit32.SignMask) != 0)
+                return -1; // Negative
+
+            return 1;
+        }
+
+        /// <summary>
         /// Returns the square root of a specified number.
         /// </summary>
         /// <param name="x">The number whose square root is to be found.</param>
