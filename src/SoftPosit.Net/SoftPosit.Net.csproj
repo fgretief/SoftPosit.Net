@@ -12,7 +12,7 @@
     <Deterministic>true</Deterministic>
     <PackageId>SoftPosit.Net</PackageId>
     <VersionPrefix>0.1.2</VersionPrefix>
-    <VersionSuffix>alpha2</VersionSuffix>
+    <VersionSuffix>alpha3</VersionSuffix>
     <Authors>Francois Retief</Authors>
   </PropertyGroup>
 

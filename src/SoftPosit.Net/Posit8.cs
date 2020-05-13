@@ -483,6 +483,21 @@ namespace System.Numerics
     /// </summary>
     public static partial class MathP
     {
-
+        /// <summary>
+        /// Returns the absolute value of a <see cref="Posit8"/> number.
+        /// </summary>
+        /// <param name="x">A number that is greater than or equal to MinValue, but less than or equal to MaxValue.</param>
+        /// <returns>A <see cref="Posit8"/> number, x, such that 0 ≤ x ≤ MaxValue.</returns>
+        public static Posit8 Abs(Posit8 x)
+        {
+            unchecked
+            {
+                const int CHAR_BIT = 8;
+                // http://graphics.stanford.edu/~seander/bithacks.html#IntegerAbs
+                var mask = (sbyte)x.ui >> sizeof(byte) * CHAR_BIT - 1;
+                var result = (x.ui ^ mask) - mask;
+                return new Posit8((byte)result);
+            }
+        }
     }
 }

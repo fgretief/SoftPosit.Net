@@ -479,6 +479,21 @@ namespace System.Numerics
 
     public static partial class MathP
     {
-
+        /// <summary>
+        /// Returns the absolute value of a <see cref="Posit32"/> number.
+        /// </summary>
+        /// <param name="x">A number that is greater than or equal to MinValue, but less than or equal to MaxValue.</param>
+        /// <returns>A <see cref="Posit32"/> number, x, such that 0 ≤ x ≤ MaxValue.</returns>
+        public static Posit32 Abs(Posit32 x)
+        {
+            unchecked
+            {
+                const int CHAR_BIT = 8;
+                // http://graphics.stanford.edu/~seander/bithacks.html#IntegerAbs
+                var mask = (int)x.ui >> sizeof(uint) * CHAR_BIT - 1;
+                var result = ((int)x.ui ^ mask) - mask;
+                return new Posit32(result);
+            }
+        }
     }
 }
