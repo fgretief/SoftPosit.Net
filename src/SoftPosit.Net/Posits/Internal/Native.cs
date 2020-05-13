@@ -66,6 +66,13 @@ namespace System.Numerics.Posits.Internal
         private static extern double ConvertP8ToDouble(in posit8_t value);
 
 
+        public static posit8_t p16_to_p8(in posit16_t value) => throw new NotImplementedException();
+
+        public static posit8_t p32_to_p8(in posit32_t value) => throw new NotImplementedException();
+
+        public static posit8_t p64_to_p8(in posit64_t value) => throw new NotImplementedException();
+
+
         [DllImport(SoftPosit)]
         public static extern posit8_t q8_to_p8(in quire8_t q);
 
@@ -118,6 +125,13 @@ namespace System.Numerics.Posits.Internal
 
         [DllImport(SoftPosit, EntryPoint = "convertP16ToDouble")]
         private static extern double ConvertP16ToDouble(in posit16_t value);
+
+
+        public static posit16_t p8_to_p16(in posit8_t value) => throw new NotImplementedException();
+
+        public static posit16_t p32_to_p16(in posit32_t value) => throw new NotImplementedException();
+
+        public static posit16_t p64_to_p16(in posit64_t value) => throw new NotImplementedException();
 
 
         [DllImport(SoftPosit)]
@@ -174,6 +188,13 @@ namespace System.Numerics.Posits.Internal
         public static extern double ConvertP32ToDouble(in posit32_t value);
 
 
+        public static posit32_t p8_to_p32(in posit8_t value) => throw new NotImplementedException();
+
+        public static posit32_t p16_to_p32(in posit16_t value) => throw new NotImplementedException();
+
+        public static posit32_t p64_to_p32(in posit64_t value) => throw new NotImplementedException();
+
+
         [DllImport(SoftPosit)]
         public static extern posit32_t q32_to_p32(in quire32_t q);
 
@@ -226,6 +247,13 @@ namespace System.Numerics.Posits.Internal
 
         [DllImport(SoftPosit, EntryPoint = "convertP64ToDouble")]
         private static extern double ConvertP64ToDouble(in posit64_t value);
+
+
+        public static posit64_t p8_to_p64(in posit8_t value) => throw new NotImplementedException();
+
+        public static posit64_t p16_to_p64(in posit16_t value) => throw new NotImplementedException();
+
+        public static posit64_t p32_to_p64(in posit32_t value) => throw new NotImplementedException();
 
 
         public static posit64_t q64_to_p64(in quire64_t q) => throw new NotImplementedException();

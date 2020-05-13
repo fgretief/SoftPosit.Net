@@ -336,6 +336,39 @@ namespace System.Numerics
         }
 
         /// <summary>
+        /// Defines an explicit conversion of a <see cref="Posit16"/> number
+        /// to a <see cref="Posit8"/> number.
+        /// </summary>
+        /// <param name="value">The posit number to convert.</param>
+        /// <returns>The converted posit number.</returns>
+        public static explicit operator Posit8(Posit16 value)
+        {
+            return p16_to_p8(value);
+        }
+
+        /// <summary>
+        /// Defines an explicit conversion of a <see cref="Posit32"/> number
+        /// to a <see cref="Posit8"/> number.
+        /// </summary>
+        /// <param name="value">The posit number to convert.</param>
+        /// <returns>The converted posit number.</returns>
+        public static explicit operator Posit8(Posit32 value)
+        {
+            return p32_to_p8(value);
+        }
+
+        /// <summary>
+        /// Defines an explicit conversion of a <see cref="Posit64"/> number
+        /// to a <see cref="Posit8"/> number.
+        /// </summary>
+        /// <param name="value">The posit number to convert.</param>
+        /// <returns>The converted posit number.</returns>
+        public static explicit operator Posit8(Posit64 value)
+        {
+            return p64_to_p8(value);
+        }
+
+        /// <summary>
         /// Defines an explicit conversion of a <see cref="Quire8"/> accumulator to a <see cref="Posit8"/> number.
         /// </summary>
         public static explicit operator Posit8(Quire8 value)
