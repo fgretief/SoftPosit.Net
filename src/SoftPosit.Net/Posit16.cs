@@ -493,5 +493,16 @@ namespace System.Numerics
                 return new Posit16((ushort)result);
             }
         }
+
+        /// <summary>
+        /// Returns a value with the magnitude of <paramref name="x"/> and the sign of <paramref name="y"/>.
+        /// </summary>
+        /// <param name="x">A number whose magnitude is used in the result.</param>
+        /// <param name="y">A number whose sign is the used in the result.</param>
+        /// <returns>A value with the magnitude of <paramref name="x"/> and the sign of <paramref name="y"/>.</returns>
+        public static Posit16 CopySign(Posit16 x, Posit16 y)
+        {
+            return ((x.ui ^ y.ui) & Posit16.SignMask) == 0 ? x : -x;
+        }
     }
 }

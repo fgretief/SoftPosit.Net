@@ -495,5 +495,16 @@ namespace System.Numerics
                 return new Posit32(result);
             }
         }
+
+        /// <summary>
+        /// Returns a value with the magnitude of <paramref name="x"/> and the sign of <paramref name="y"/>.
+        /// </summary>
+        /// <param name="x">A number whose magnitude is used in the result.</param>
+        /// <param name="y">A number whose sign is the used in the result.</param>
+        /// <returns>A value with the magnitude of <paramref name="x"/> and the sign of <paramref name="y"/>.</returns>
+        public static Posit32 CopySign(Posit32 x, Posit32 y)
+        {
+            return ((x.ui ^ y.ui) & Posit32.SignMask) == 0 ? x : -x;
+        }
     }
 }
