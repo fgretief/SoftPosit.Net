@@ -37,6 +37,13 @@ namespace System.Numerics
         internal Posit16(short value) => ui = (ushort)value;
 
         //
+        // Constants for manipulating the private bit-representation
+        //
+
+        internal const ushort SignMask = 1 << (nbits - 1);
+        internal const int SignShift = nbits - 1;
+
+        //
         // Public Constants
         //
 
@@ -464,8 +471,7 @@ namespace System.Numerics
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static bool IsZeroOrNaR(Posit16 p)
         {
-            var mask = 1 << (Posit16.nbits - 1);
-            return (p.ui & (mask - 1)) == 0;
+            return (p.ui & (Posit16.SignMask - 1)) == 0;
         }
     }
 

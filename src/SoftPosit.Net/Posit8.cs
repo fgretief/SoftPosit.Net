@@ -37,6 +37,13 @@ namespace System.Numerics
         internal Posit8(sbyte value) => ui = (byte)value;
 
         //
+        // Constants for manipulating the private bit-representation
+        //
+
+        internal const ushort SignMask = 1 << (nbits - 1);
+        internal const int SignShift = nbits - 1;
+
+        //
         // Public Constants
         //
 
@@ -466,8 +473,7 @@ namespace System.Numerics
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static bool IsZeroOrNaR(Posit8 p)
         {
-            var mask = 1 << (Posit8.nbits - 1);
-            return (p.ui & (mask - 1)) == 0;
+            return (p.ui & (Posit8.SignMask - 1)) == 0;
         }
     }
 

@@ -39,6 +39,13 @@ namespace System.Numerics
         internal Posit64(long value) => ui = (ulong)value;
 
         //
+        // Constants for manipulating the private bit-representation
+        //
+
+        internal const ulong SignMask = 1ul << (nbits - 1);
+        internal const int SignShift = nbits - 1;
+
+        //
         // Public Constants
         //
 
@@ -468,8 +475,7 @@ namespace System.Numerics
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static bool IsZeroOrNaR(Posit64 p)
         {
-            var mask = 1ul << (Posit64.nbits - 1);
-            return (p.ui & (mask - 1)) == 0;
+            return (p.ui & (Posit64.SignMask - 1)) == 0;
         }
     }
 
