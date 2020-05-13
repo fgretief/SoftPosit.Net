@@ -12,6 +12,7 @@ namespace System.Numerics
     /// <summary>
     /// Posit (nbits=16, es=1)
     /// </summary>
+    [Serializable]
     [StructLayout(LayoutKind.Sequential)]
     public readonly struct Posit16 : IComparable, IComparable<Posit16>, IEquatable<Posit16>
     {
