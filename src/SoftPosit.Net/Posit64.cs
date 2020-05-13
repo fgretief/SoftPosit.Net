@@ -508,5 +508,34 @@ namespace System.Numerics
         {
             return ((x.ui ^ y.ui) & Posit64.SignMask) == 0 ? x : -x;
         }
+
+        /// <summary>
+        /// Returns the square root of a specified number.
+        /// </summary>
+        /// <param name="x">The number whose square root is to be found.</param>
+        /// <returns>One of the values in the following table.
+        /// <list type="table">
+        ///   <listheader>
+        ///     <term><paramref name="x"/> parameter</term>
+        ///     <term>Return value</term>
+        ///   </listheader>
+        ///   <item>
+        ///     <term>Zero or positive</term>
+        ///     <term>The positive square root of <paramref name="x"/>.</term>
+        ///   </item>
+        ///   <item>
+        ///     <term>Negative</term>
+        ///     <term>NaR</term>
+        ///   </item>
+        ///   <item>
+        ///     <term>NaR</term>
+        ///     <term>NaR</term>
+        ///   </item>
+        /// </list>
+        /// </returns>
+        public static Posit64 Sqrt(Posit64 x)
+        {
+            return p64_sqrt(x);
+        }
     }
 }

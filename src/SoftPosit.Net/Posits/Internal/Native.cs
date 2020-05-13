@@ -33,6 +33,8 @@ namespace System.Numerics.Posits.Internal
 
         public static posit8_t p8_mod(in posit8_t a, in posit8_t b) => throw new NotImplementedException();
 
+        public static posit8_t p8_sqrt(in posit8_t a) => throw new NotImplementedException();
+
 
         public static posit8_t i32_to_p8(in int value) => throw new NotImplementedException();
 
@@ -93,6 +95,8 @@ namespace System.Numerics.Posits.Internal
         public static posit16_t p16_div(in posit16_t a, in posit16_t b) => throw new NotImplementedException();
 
         public static posit16_t p16_mod(in posit16_t a, in posit16_t b) => throw new NotImplementedException();
+
+        public static posit16_t p16_sqrt(in posit16_t a) => throw new NotImplementedException();
 
 
         public static posit16_t i32_to_p16(in int value) => throw new NotImplementedException();
@@ -155,6 +159,8 @@ namespace System.Numerics.Posits.Internal
 
         public static posit32_t p32_mod(in posit32_t a, in posit32_t b) => throw new NotImplementedException();
 
+        public static posit32_t p32_sqrt(in posit32_t a) => throw new NotImplementedException();
+
 
         public static posit32_t i32_to_p32(in int value) => throw new NotImplementedException();
 
@@ -215,6 +221,8 @@ namespace System.Numerics.Posits.Internal
         public static posit64_t p64_div(in posit64_t a, in posit64_t b) => throw new NotImplementedException();
 
         public static posit64_t p64_mod(in posit64_t a, in posit64_t b) => throw new NotImplementedException();
+
+        public static posit64_t p64_sqrt(in posit64_t a) => throw new NotImplementedException();
 
 
         public static posit64_t i32_to_p64(in int value) => throw new NotImplementedException();
