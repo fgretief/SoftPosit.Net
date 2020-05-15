@@ -1,5 +1,6 @@
 ﻿// SPDX-License-Identifier: MIT
 
+using System.Diagnostics;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 
@@ -14,6 +15,7 @@ namespace System.Numerics
     /// </summary>
     [Serializable]
     [StructLayout(LayoutKind.Sequential)]
+    [DebuggerTypeProxy(typeof(Posits.Internal.DebugProxy))]
     public readonly struct Posit64 : IComparable, IComparable<Posit64>, IEquatable<Posit64>
     {
         internal readonly ulong ui; // unsigned integer value
