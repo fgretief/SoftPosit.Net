@@ -40,7 +40,7 @@ namespace System.Numerics
         // Constants for manipulating the private bit-representation
         //
 
-        internal const ushort SignMask = 1 << (nbits - 1);
+        internal const byte SignMask = 1 << (nbits - 1);
         internal const int SignShift = nbits - 1;
 
         //
@@ -441,7 +441,14 @@ namespace System.Numerics
             return ui;
         }
 
-        // TODO: add more operators
+        /// <summary>
+        /// Converts the numeric value of this instance to its equivalent string representation.
+        /// </summary>
+        /// <returns>The string representation of the value of this instance.</returns>
+        public override string ToString()
+        {
+            return $"0x{ui:X2}";
+        }
     }
 
     /// <summary>

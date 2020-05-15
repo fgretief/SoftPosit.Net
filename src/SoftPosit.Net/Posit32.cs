@@ -444,7 +444,14 @@ namespace System.Numerics
             return (int)ui;
         }
 
-        // TODO: add more operators
+        /// <summary>
+        /// Converts the numeric value of this instance to its equivalent string representation.
+        /// </summary>
+        /// <returns>The string representation of the value of this instance.</returns>
+        public override string ToString()
+        {
+            return $"0x{ui:X}";
+        }
     }
 
     public static partial class Posit
