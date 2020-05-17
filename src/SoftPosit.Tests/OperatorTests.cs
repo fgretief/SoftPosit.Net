@@ -173,5 +173,31 @@ namespace System.Numerics.Posits.Tests
 
             Assert.That((pA / pB).ui, Is.EqualTo(pC.ui));
         }
+
+        [TestCase(0b1000_0000, 0b1000_0000, 0b1000_0000, "NaR % NaR = NaR")]
+        [TestCase(0b1000_0000, 0b0000_0000, 0b1000_0000, "NaR % 0 = NaR")]
+        [TestCase(0b1000_0000, 0b0100_0000, 0b1000_0000, "NaR % 1 = NaR")]
+        [TestCase(0b1000_0000, 0b1100_0000, 0b1000_0000, "NaR % -1 = NaR")]
+
+        [TestCase(0b0000_0000, 0b0000_0000, 0b1000_0000, "0 % 0 = NaR")]
+        [TestCase(0b0000_0000, 0b0100_0000, 0b0000_0000, "0 % 1 = 0")]
+        [TestCase(0b0000_0000, 0b1100_0000, 0b0000_0000, "0 % -1 = 0")]
+
+        [TestCase(0b0100_0000, 0b0100_0000, 0b0000_0000, "1 % 1 = 0")]
+        [TestCase(0b0010_0000, 0b0010_0000, 0b0000_0000, "0.5 % 0.5 = 0")]
+        [TestCase(0b0001_0000, 0b0001_0000, 0b0000_0000, "0.25 % 0.25 = 0")]
+        [TestCase(0b1100_0000, 0b1100_0000, 0b0000_0000, "-1 % -1 = 0")]
+
+        // TODO: more test-cases here
+        public void TestMod(byte a, byte b, byte c, string op)
+        {
+            var pA = new Posit8(a);
+            var pB = new Posit8(b);
+            var pC = new Posit8(c);
+
+            Console.WriteLine(op);
+
+            Assert.That((pA % pB).ui, Is.EqualTo(pC.ui));
+        }
     }
 }

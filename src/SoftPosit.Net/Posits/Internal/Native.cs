@@ -28,9 +28,6 @@ namespace System.Numerics.Posits.Internal
         static byte packToP8UI(int regime, int fracA) => (byte)((byte)regime + (byte)fracA);
 
 
-        public static posit8_t p8_mod(in posit8_t a, in posit8_t b) => throw new NotImplementedException();
-
-
         public static posit8_t i64_to_p8(in long value) => throw new NotImplementedException();
 
         public static posit8_t ui64_to_p8(in ulong value) => throw new NotImplementedException();
