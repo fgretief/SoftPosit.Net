@@ -186,5 +186,15 @@ namespace System.Numerics.Posits.Tests
             Assert.That(Sign(Posit64.Zero), Is.EqualTo(0));
             Assert.That(Sign(Posit64.NaR), Is.EqualTo(0));
         }
+
+        [Test]
+        public void TestSqrt_Posit8()
+        {
+            Assert.That(Sqrt(Posit8.Zero), Is.EqualTo(Posit8.Zero));
+            Assert.That(Sqrt((Posit8)4), Is.EqualTo(Posit8.Two));
+            Assert.That(Sqrt((Posit8)16), Is.EqualTo((Posit8)4));
+            Assert.That(Sqrt(Posit8.NaR), Is.EqualTo(Posit8.NaR));
+            Assert.That(Sqrt(-(Posit8)4), Is.EqualTo(Posit8.NaR));
+        }
     }
 }
