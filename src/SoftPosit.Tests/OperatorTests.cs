@@ -1,7 +1,6 @@
 ﻿// SPDX-License-Identifier: MIT
 
 using NUnit.Framework;
-using System.Diagnostics;
 
 namespace System.Numerics.Posits.Tests
 {
@@ -134,6 +133,45 @@ namespace System.Numerics.Posits.Tests
 
             Assert.That((pA * pB).ui, Is.EqualTo(pC.ui));
             Assert.That((pB * pA).ui, Is.EqualTo(pC.ui));
+        }
+
+        [TestCase(0b1000_0000, 0b1000_0000, 0b1000_0000, "NaR / NaR = NaR")]
+        [TestCase(0b1000_0000, 0b0000_0000, 0b1000_0000, "NaR / 0 = NaR")]
+        [TestCase(0b1000_0000, 0b0100_0000, 0b1000_0000, "NaR / 1 = NaR")]
+        [TestCase(0b1000_0000, 0b1100_0000, 0b1000_0000, "NaR / -1 = NaR")]
+
+        [TestCase(0b0000_0000, 0b0000_0000, 0b1000_0000, "0 / 0 = NaR")]
+        [TestCase(0b0000_0000, 0b0100_0000, 0b0000_0000, "0 / 1 = 0")]
+        [TestCase(0b0000_0000, 0b1100_0000, 0b0000_0000, "0 / -1 = 0")]
+
+        [TestCase(0b0100_0000, 0b0000_0000, 0b1000_0000, "1 / 0 = NaR")]
+        [TestCase(0b0100_0000, 0b0100_0000, 0b0100_0000, "1 / 1 = 1")]
+        [TestCase(0b0100_0000, 0b1100_0000, 0b1100_0000, "1 / -1 = -1")]
+        [TestCase(0b0100_0000, 0b0010_0000, 0b0110_0000, "1 / 0.5 = 2")]
+        [TestCase(0b0100_0000, 0b0001_0000, 0b0111_0000, "1 / 0.25 = 4")]
+        [TestCase(0b0100_0000, 0b0110_0000, 0b0010_0000, "1 / 2 = 0.5")]
+        [TestCase(0b0100_0000, 0b0111_0000, 0b0001_0000, "1 / 4 = 0.25")]
+
+        [TestCase(0b0010_0000, 0b0100_0000, 0b0010_0000, "0.5 / 1 = 0.5")]
+        [TestCase(0b0001_0000, 0b0100_0000, 0b0001_0000, "0.25 / 1 = 0.25")]
+        [TestCase(0b0110_0000, 0b0100_0000, 0b0110_0000, "2 / 1 = 2")]
+        [TestCase(0b0111_0000, 0b0100_0000, 0b0111_0000, "4 / 1 = 4")]
+
+        [TestCase(0b1100_0000, 0b0000_0000, 0b1000_0000, "-1 / 0 = NaR")]
+        [TestCase(0b1100_0000, 0b0100_0000, 0b1100_0000, "-1 / 1 = -1")]
+        [TestCase(0b1100_0000, 0b1100_0000, 0b0100_0000, "-1 / -1 = 1")]
+
+        [TestCase(0x01, 0x05, 0b00001101, "0.015625 / 0.078125 = 0.203125")]
+        [TestCase(0x01, 0x41, 0b00000001, "0.015625 / 1.03125 = 0.015625")]
+        public void TestDiv(byte a, byte b, byte c, string op)
+        {
+            var pA = new Posit8(a);
+            var pB = new Posit8(b);
+            var pC = new Posit8(c);
+
+            Console.WriteLine(op);
+
+            Assert.That((pA / pB).ui, Is.EqualTo(pC.ui));
         }
     }
 }
