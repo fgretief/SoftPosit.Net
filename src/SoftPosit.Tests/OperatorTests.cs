@@ -100,5 +100,40 @@ namespace System.Numerics.Posits.Tests
 
             Assert.That((pA - pB).ui, Is.EqualTo(pC.ui));
         }
+
+        [TestCase(0b1000_0000, 0b1000_0000, 0b1000_0000, "NaR * NaR = NaR")]
+        [TestCase(0b1000_0000, 0b0000_0000, 0b1000_0000, "NaR * 0 = NaR")]
+        [TestCase(0b1000_0000, 0b0100_0000, 0b1000_0000, "NaR * 1 = NaR")]
+        [TestCase(0b1000_0000, 0b1100_0000, 0b1000_0000, "NaR * -1 = NaR")]
+
+        [TestCase(0b0000_0000, 0b0000_0000, 0b0000_0000, "0 * 0 = 0")]
+        [TestCase(0b0000_0000, 0b0100_0000, 0b0000_0000, "0 * 1 = 0")]
+        [TestCase(0b0000_0000, 0b1100_0000, 0b0000_0000, "0 * -1 = 0")]
+
+        [TestCase(0b0100_0000, 0b0100_0000, 0b0100_0000, "1 * 1 = 1")]
+        [TestCase(0b0100_0000, 0b0010_0000, 0b0010_0000, "1 * 0.5 = 0.5")]
+        [TestCase(0b0100_0000, 0b0001_0000, 0b0001_0000, "1 * 0.25 = 0.25")]
+
+        [TestCase(0b0100_0000, 0b1100_0000, 0b1100_0000, "1 * -1 = -1")]
+        [TestCase(0b0100_0000, 0b1110_0000, 0b1110_0000, "1 * -0.5 = -0.5")]
+        [TestCase(0b0100_0000, 0b1111_0000, 0b1111_0000, "1 * -0.25 = -0.25")]
+
+        [TestCase(0b1100_0000, 0b1100_0000, 0b0100_0000, "-1 * -1 = 1")]
+        [TestCase(0b0001_0000, 0b0001_0000, 0b0000_0100, "0.25 * 0.25 = 0.0625")]
+        [TestCase(0b0111_1000, 0b0111_1000, 0b0111_1111, "8 * 8 = 64")]
+
+        [TestCase(0x50, 0x01, 0x02, "1.5 * 0.015625 = 0.03125")]
+        [TestCase(0x03, 0x03, 0x01, "0.046875 * 0.046875 = 0.015625")]
+        public void TestMul(byte a, byte b, byte c, string op)
+        {
+            var pA = new Posit8(a);
+            var pB = new Posit8(b);
+            var pC = new Posit8(c);
+
+            Console.WriteLine(op);
+
+            Assert.That((pA * pB).ui, Is.EqualTo(pC.ui));
+            Assert.That((pB * pA).ui, Is.EqualTo(pC.ui));
+        }
     }
 }
