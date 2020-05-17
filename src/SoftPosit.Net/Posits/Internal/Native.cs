@@ -17,7 +17,7 @@ namespace System.Numerics.Posits.Internal
     using quire32_t = Quire32;
     using quire64_t = Quire64;
 
-    internal static class Native
+    internal static partial class Native
     {
         private const string SoftPosit = "SoftPosit.x86.dll";
 
@@ -36,10 +36,6 @@ namespace System.Numerics.Posits.Internal
         public static posit8_t p8_sqrt(in posit8_t a) => throw new NotImplementedException();
 
 
-        public static posit8_t i32_to_p8(in int value) => throw new NotImplementedException();
-
-        public static posit8_t ui32_to_p8(in uint value) => throw new NotImplementedException();
-
         public static posit8_t i64_to_p8(in long value) => throw new NotImplementedException();
 
         public static posit8_t ui64_to_p8(in ulong value) => throw new NotImplementedException();
@@ -51,10 +47,6 @@ namespace System.Numerics.Posits.Internal
         [DllImport(SoftPosit, EntryPoint = "convertDoubleToP8")]
         public static extern posit8_t ConvertDoubleToP8(in double value);
 
-
-        public static int p8_to_i32(in posit8_t value) => throw new NotImplementedException();
-
-        public static uint p8_to_ui32(in posit8_t value) => throw new NotImplementedException();
 
         public static long p8_to_i64(in posit8_t value) => throw new NotImplementedException();
 
