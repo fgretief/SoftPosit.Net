@@ -11,8 +11,8 @@
     <AllowedOutputExtensionsInPackageBuildOutputFolder>$(AllowedOutputExtensionsInPackageBuildOutputFolder);.pdb</AllowedOutputExtensionsInPackageBuildOutputFolder>
     <Deterministic>true</Deterministic>
     <PackageId>SoftPosit.Net</PackageId>
-    <VersionPrefix>0.1.2</VersionPrefix>
-    <VersionSuffix>alpha5</VersionSuffix>
+    <VersionPrefix>0.1.3</VersionPrefix>
+    <VersionSuffix>alpha</VersionSuffix>
     <Authors>Francois Retief</Authors>
   </PropertyGroup>
 
