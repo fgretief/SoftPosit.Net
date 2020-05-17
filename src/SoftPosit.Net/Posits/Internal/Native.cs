@@ -23,9 +23,10 @@ namespace System.Numerics.Posits.Internal
 
         #region Posit (nbits=8, es=0)
 
-        public static posit8_t p8_add(in posit8_t a, in posit8_t b) => throw new NotImplementedException();
+        static bool signP8UI(int x) => (x & Posit8.SignMask) != 0;
+        static bool signregP8UI(int x) => (x & (Posit8.SignMask >> 1)) != 0;
+        static byte packToP8UI(int regime, int fracA) => (byte)((byte)regime + (byte)fracA);
 
-        public static posit8_t p8_sub(in posit8_t a, in posit8_t b) => throw new NotImplementedException();
 
         public static posit8_t p8_mul(in posit8_t a, in posit8_t b) => throw new NotImplementedException();
 
