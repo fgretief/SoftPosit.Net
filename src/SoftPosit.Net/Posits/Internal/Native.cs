@@ -91,8 +91,6 @@ namespace System.Numerics.Posits.Internal
         private static extern double ConvertP16ToDouble(in posit16_t value);
 
 
-        public static posit16_t p8_to_p16(in posit8_t value) => throw new NotImplementedException();
-
         public static posit16_t p32_to_p16(in posit32_t value) => throw new NotImplementedException();
 
         public static posit16_t p64_to_p16(in posit64_t value) => throw new NotImplementedException();
@@ -153,8 +151,6 @@ namespace System.Numerics.Posits.Internal
         [DllImport(SoftPosit, EntryPoint = "convertP32ToDouble")]
         public static extern double ConvertP32ToDouble(in posit32_t value);
 
-
-        public static posit32_t p8_to_p32(in posit8_t value) => throw new NotImplementedException();
 
         public static posit32_t p16_to_p32(in posit16_t value) => throw new NotImplementedException();
 
