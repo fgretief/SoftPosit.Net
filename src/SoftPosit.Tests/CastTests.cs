@@ -394,5 +394,133 @@ namespace System.Numerics.Posits.Tests
 
             Assert.That(x, Is.EqualTo(value));
         }
+
+        [TestCase(0.0, 0b0000_0000)]
+        [TestCase(1.0, 0b0100_0000)]
+        [TestCase(-1.0, 0b1100_0000)]
+        [TestCase(double.NaN, 0b1000_0000)]
+        [TestCase(double.PositiveInfinity, 0b1000_0000)]
+        [TestCase(double.NegativeInfinity, 0b1000_0000)]
+        [TestCase(64, 0x7F)]
+        [TestCase(65, 0x7F)]
+        [TestCase(double.MaxValue, 0x7F)]
+        [TestCase(-64, 0b1000_0001)]
+        [TestCase(-65, 0b1000_0001)]
+        [TestCase(-double.MaxValue, 0b1000_0001)]
+        [TestCase(0.015625, 0b0000_0001)] // +minpos
+        [TestCase(double.Epsilon, 0b0000_0001)] // +minpos
+        [TestCase(-0.015625, 0b1111_1111)] // -minpos
+        [TestCase(-double.Epsilon, 0b1111_1111)] // -minpos
+
+        [TestCase(0.515625, 0b0010_0001)]
+        [TestCase(0.50001, 0b0010_0000)]
+        [TestCase(0.5, 0b0010_0000)]
+        [TestCase(0.49999, 0b0010_0000)]
+        [TestCase(0.484375, 0b0001_1111)]
+
+        [TestCase(-0.515625, 0b1101_1111)]
+        [TestCase(-0.50001, 0b1110_0000)]
+        [TestCase(-0.5, 0b1110_0000)]
+        [TestCase(-0.49999, 0b1110_0000)]
+        [TestCase(-0.484375, 0b1110_0001)]
+
+        [TestCase(0.25, 0b0001_0000)]
+        [TestCase(-0.25, 0b1111_0000)]
+
+        [TestCase(1.96875, 0b0101_1111)]
+        [TestCase(1.9999, 0b0110_0000)]
+        [TestCase(2, 0b0110_0000)]
+        [TestCase(2.0001, 0b0110_0000)]
+        [TestCase(2.125, 0b0110_0001)]
+
+        [TestCase(63, 0b0111_1111)]
+        [TestCase(-63, 0b1000_0001)]
+        public void TestFloat64ToPosit8Cast(double value, byte ui)
+        {
+            var p = (Posit8)value;
+            Assert.That(p.ui, Is.EqualTo(ui));
+        }
+
+        [TestCase(0f, 0x00)]
+        [TestCase(1f, 0x40)]
+        [TestCase(-1f, 0xC0)]
+        [TestCase(64f, 0x7F)]
+        [TestCase(-64f, 0x81)]
+        [TestCase(float.NaN, 0x80)] // NaR
+        [TestCase(float.PositiveInfinity, 0x80)] // NaR
+        [TestCase(float.NegativeInfinity, 0x80)] // NaR
+        [TestCase(float.MaxValue, 0x7F)]
+        [TestCase(float.MinValue, 0x81)]
+        [TestCase(0.015625f, 0b0000_0001)] // +minpos
+        [TestCase(float.Epsilon, 0b0000_0001)] // +minpos
+        [TestCase(-0.015625f, 0b1111_1111)] // -minpos
+        [TestCase(-float.Epsilon, 0b1111_1111)] // -minpos
+
+        [TestCase(0.515625f, 0b0010_0001)]
+        [TestCase(0.50001f, 0b0010_0000)]
+        [TestCase(0.5f, 0b0010_0000)]
+        [TestCase(0.49999f, 0b0010_0000)]
+        [TestCase(0.484375f, 0b0001_1111)]
+
+        [TestCase(-0.515625f, 0b1101_1111)]
+        [TestCase(-0.50001f, 0b1110_0000)]
+        [TestCase(-0.5f, 0b1110_0000)]
+        [TestCase(-0.49999f, 0b1110_0000)]
+        [TestCase(-0.484375f, 0b1110_0001)]
+
+        [TestCase(1.96875f, 0b0101_1111)]
+        [TestCase(1.9999f, 0b0110_0000)]
+        [TestCase(2f, 0b0110_0000)]
+        [TestCase(2.0001f, 0b0110_0000)]
+        [TestCase(2.125f, 0b0110_0001)]
+
+        [TestCase(-1.96875f, 0b1010_0001)]
+        [TestCase(-1.9999f, 0b1010_0000)]
+        [TestCase(-2f, 0b1010_0000)]
+        [TestCase(-2.0001f, 0b1010_0000)]
+        [TestCase(-2.125f, 0b1001_1111)]
+
+        public void TestFloat32ToPosit8Cast(float value, byte ui)
+        {
+            Assert.That(((Posit8)value).ui, Is.EqualTo(ui));
+        }
+
+        [TestCase(0x80, double.NaN)] // North
+        [TestCase(0x00, 0.0)] // South
+        [TestCase(0x40, 1.0)] // East
+        [TestCase(0xC0, -1.0)] // West
+        [TestCase(0x7F, +64.0)] // +maxpos
+        [TestCase(0x81, -64.0)] // -maxpos
+        [TestCase(0x01, +0.015625)] // +minpos
+        [TestCase(0xFF, -0.015625)] // -minpos
+
+        [TestCase(0b00100000, +0.5)]
+        [TestCase(0b01100000, +2)]
+        [TestCase(0b10100000, -2)]
+        [TestCase(0b11100000, -0.5)]
+        public void TestPosit8ToFloat64Cast(byte ui, double value)
+        {
+            var p = new Posit8(ui);
+            Assert.That((double)p, Is.EqualTo(value));
+        }
+
+        [TestCase(0x80, float.NaN)] // North
+        [TestCase(0x00, 0.0f)] // South
+        [TestCase(0x40, 1.0f)] // East
+        [TestCase(0xC0, -1.0f)] // West
+        [TestCase(0x7F, +64.0f)] // +maxpos
+        [TestCase(0x81, -64.0f)] // -maxpos
+        [TestCase(0x01, +0.015625f)] // +minpos
+        [TestCase(0xFF, -0.015625f)] // -minpos
+
+        [TestCase(0b00100000, +0.5f)]
+        [TestCase(0b01100000, +2f)]
+        [TestCase(0b10100000, -2f)]
+        [TestCase(0b11100000, -0.5f)]
+        public void TestPosit8ToFloat32Cast(byte ui, float value)
+        {
+            var p = new Posit8(ui);
+            Assert.That((float)p, Is.EqualTo(value));
+        }
     }
 }

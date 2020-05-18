@@ -28,22 +28,6 @@ namespace System.Numerics.Posits.Internal
         static byte packToP8UI(int regime, int fracA) => (byte)((byte)regime + (byte)fracA);
 
 
-        public static posit8_t f32_to_p8(in float value) => ConvertDoubleToP8(value);
-
-        public static posit8_t f64_to_p8(in double value) => ConvertDoubleToP8(value);
-
-        [DllImport(SoftPosit, EntryPoint = "convertDoubleToP8")]
-        public static extern posit8_t ConvertDoubleToP8(in double value);
-
-
-        public static float p8_to_f32(in posit8_t value) => (float) ConvertP8ToDouble(value);
-
-        public static double p8_to_f64(in posit8_t value) => ConvertP8ToDouble(value);
-
-        [DllImport(SoftPosit, EntryPoint = "convertP8ToDouble")]
-        private static extern double ConvertP8ToDouble(in posit8_t value);
-
-
         public static posit8_t p16_to_p8(in posit16_t value) => throw new NotImplementedException();
 
         public static posit8_t p32_to_p8(in posit32_t value) => throw new NotImplementedException();
