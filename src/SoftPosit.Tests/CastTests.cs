@@ -570,5 +570,55 @@ namespace System.Numerics.Posits.Tests
 
             Assert.That(pC.ui, Is.EqualTo(pB.ui));
         }
+
+        [TestCase(0, 0, "0")] // Zero
+        [TestCase(0x8000, 0x80, "NaR")]
+        [TestCase(0x4000, 0x40, "1")]
+        [TestCase(0xC000, 0xC0, "-1")]
+
+        [TestCase(0x7FFF, 0x7F, "+maxpos")]
+        [TestCase(0x0001, 0x01, "+minpos")]
+        [TestCase(0x8001, 0x81, "-maxpos")]
+        [TestCase(0xFFFF, 0xFF, "-minpos")]
+
+        [TestCase(0x3000, 0b00100000, "0.5")]
+        [TestCase(0xD000, 0b11100000, "-0.5")]
+        [TestCase(0x5000, 0b01100000, "2")]
+        [TestCase(0xB000, 0b10100000, "-2")]
+        public void TestPosit16ToPosit8Cast(int uiA, int uiB, string op)
+        {
+            var pA = new Posit16((ushort)uiA);
+            var pB = new Posit8((byte)uiB);
+            var pC = (Posit8)pA;
+
+            Console.WriteLine("A=0x{0:X4}, B=0x{1:X2}, C=0x{2:X2}", pA.ui, pB.ui, pC.ui);
+
+            Assert.That(pC.ui, Is.EqualTo(pB.ui));
+        }
+
+        [TestCase(0u, 0, "0")] // Zero
+        [TestCase(0x8000_0000u, 0x80, "NaR")]
+        [TestCase(0x4000_0000u, 0x40, "1")]
+        [TestCase(0xC000_0000u, 0xC0, "-1")]
+
+        [TestCase(0x7FFF_FFFFu, 0x7F, "+maxpos")]
+        [TestCase(0x0000_0001u, 0x01, "+minpos")]
+        [TestCase(0x8000_0001u, 0x81, "-maxpos")]
+        [TestCase(0xFFFF_FFFFu, 0xFF, "-minpos")]
+
+        [TestCase(0x3800_0000u, 0x20, "0.5")]
+        [TestCase(0xC800_0000u, 0xE0, "-0.5")]
+        [TestCase(0x4800_0000u, 0x60, "2")]
+        [TestCase(0xB800_0000u, 0xA0, "-2")]
+        public void TestPosit32ToPosit8Cast(uint uiA, int uiB, string op)
+        {
+            var pA = new Posit32(uiA);
+            var pB = new Posit8((byte)uiB);
+            var pC = (Posit8)pA;
+
+            Console.WriteLine("A=0x{0:X4}, B=0x{1:X2}, C=0x{2:X2}", pA.ui, pB.ui, pC.ui);
+
+            Assert.That(pC.ui, Is.EqualTo(pB.ui));
+        }
     }
 }

@@ -28,10 +28,6 @@ namespace System.Numerics.Posits.Internal
         static byte packToP8UI(int regime, int fracA) => (byte)((byte)regime + (byte)fracA);
 
 
-        public static posit8_t p16_to_p8(in posit16_t value) => throw new NotImplementedException();
-
-        public static posit8_t p32_to_p8(in posit32_t value) => throw new NotImplementedException();
-
         public static posit8_t p64_to_p8(in posit64_t value) => throw new NotImplementedException();
 
 
@@ -45,6 +41,11 @@ namespace System.Numerics.Posits.Internal
         #endregion
 
         #region Posit (nbits=16, es=1)
+
+        static bool signP16UI(int x) => (x & Posit16.SignMask) != 0;
+        static bool signregP16UI(int x) => (x & (Posit16.SignMask >> 1)) != 0;
+        static ushort packToP16UI(int regime, int fracA) => (byte)((byte)regime + (byte)fracA);
+
 
         public static posit16_t p16_add(in posit16_t a, in posit16_t b) => throw new NotImplementedException();
 
@@ -106,6 +107,11 @@ namespace System.Numerics.Posits.Internal
         #endregion
 
         #region Posit (nbits=32, es=2)
+
+        static bool signP32UI(uint x) => (x & Posit32.SignMask) != 0;
+        static bool signregP32UI(uint x) => (x & (Posit32.SignMask >> 1)) != 0;
+        static uint packToP32UI(uint regime, uint fracA) => (uint)((uint)regime + (uint)fracA);
+
 
         public static posit32_t p32_add(in posit32_t a, in posit32_t b) => throw new NotImplementedException();
 
