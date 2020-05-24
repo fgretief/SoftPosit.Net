@@ -39,6 +39,12 @@ namespace System.Numerics
         internal Posit8(sbyte value) => ui = (byte)value;
         internal Posit8(bool sign, byte value) => ui = (byte)(sign ? -(sbyte)value : value);
 
+        internal void Deconstruct(out bool sign, out byte uiAbs)
+        {
+            sign = (ui & SignMask) != 0;
+            uiAbs = (byte)(sign ? -(sbyte)ui : ui);
+        }
+
         //
         // Constants for manipulating the private bit-representation
         //
@@ -535,6 +541,16 @@ namespace System.Numerics
         public static Posit8 CopySign(Posit8 x, Posit8 y)
         {
             return ((x.ui ^ y.ui) & Posit8.SignMask) == 0 ? x : -x;
+        }
+
+        /// <summary>
+        /// Returns the largest integral value less than or equal to the specified <see cref="Posit8"/> number.
+        /// </summary>
+        /// <param name="x">A <see cref="Posit8"/> number.</param>
+        /// <returns>The largest integral value less than or equal to <paramref name="x"/>. If <paramref name="x"/> is equal to <c>NaR</c>, that value is returned.</returns>
+        public static Posit8 Floor(Posit8 x)
+        {
+            return p8_floor(x);
         }
 
         /// <summary>
