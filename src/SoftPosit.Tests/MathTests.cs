@@ -140,6 +140,22 @@ namespace System.Numerics.Posits.Tests
         }
 
         [Test]
+        public void TestCeiling_Posit8()
+        {
+            Assert.That(Ceiling(Posit8.NaR), Is.EqualTo(Posit8.NaR));
+            Assert.That(Ceiling(Posit8.Zero), Is.EqualTo(Posit8.Zero));
+            Assert.That(Ceiling(new Posit8((byte)(Posit8.Zero.ui + 1))), Is.EqualTo(Posit8.One));
+
+            Assert.That(Ceiling(Posit8.Half), Is.EqualTo(Posit8.One));
+            Assert.That(Ceiling(Posit8.One), Is.EqualTo(Posit8.One));
+            Assert.That(Ceiling(Posit8.One+Posit8.Half), Is.EqualTo(Posit8.Two));
+
+            Assert.That(Ceiling(Posit8.MinusOne), Is.EqualTo(Posit8.MinusOne));
+            Assert.That(Ceiling(new Posit8((byte)(Posit8.MinusOne.ui + 1))), Is.EqualTo(Posit8.Zero));
+            Assert.That(Ceiling(new Posit8((byte)(Posit8.MinusOne.ui - 1))), Is.EqualTo(-Posit8.One));
+        }
+
+        [Test]
         public void TestRoundInt_Posit8()
         {
             Assert.That(Round(Posit8.One), Is.EqualTo(Posit8.One));

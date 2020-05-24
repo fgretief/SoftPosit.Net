@@ -37,6 +37,7 @@ namespace System.Numerics
 
         internal Posit8(byte value) => ui = value;
         internal Posit8(sbyte value) => ui = (byte)value;
+        internal Posit8(bool sign, byte value) => ui = (byte)(sign ? -(sbyte)value : value);
 
         //
         // Constants for manipulating the private bit-representation
@@ -507,6 +508,22 @@ namespace System.Numerics
                 var result = (x.ui ^ mask) - mask;
                 return new Posit8((byte)result);
             }
+        }
+
+        /// <summary>
+        /// Returns the smallest integral value that is greater than
+        /// or equal to the specified <see cref="Posit8"/> number.
+        /// </summary>
+        /// <param name="x">A <see cref="Posit8"/> number.</param>
+        /// <returns>
+        /// The smallest integral value that is greater than or equal to
+        /// <paramref name="x"/>. If <paramref name="x"/> is equal to
+        /// <c>NaR</c>, that value is returned. Note that this method
+        /// returns a <see cref="Posit8"/> instead of an integral type.
+        /// </returns>
+        public static Posit8 Ceiling(Posit8 x)
+        {
+            return p8_ceil(x);
         }
 
         /// <summary>
