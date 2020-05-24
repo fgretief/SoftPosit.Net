@@ -23,4 +23,25 @@ namespace System.Numerics.Posits.Tests
             }
         }
     }
+
+    public class QuireTests
+    {
+        [Test]
+        public void TestQuire8Add()
+        {
+            var qA = Quire8.Create();
+            qA += (1, 1);
+            var pA = qA.ToPosit();
+            Assert.That(pA, Is.EqualTo(Posit8.One));
+        }
+
+        [Test]
+        public void TestQuire8Sub()
+        {
+            var qA = Quire8.Create();
+            qA -= (1, 1);
+            var pA = qA.ToPosit();
+            Assert.That(pA, Is.EqualTo(Posit8.MinusOne));
+        }
+    }
 }

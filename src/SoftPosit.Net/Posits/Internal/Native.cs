@@ -30,14 +30,6 @@ namespace System.Numerics.Posits.Internal
 
         public static posit8_t p64_to_p8(in posit64_t value) => throw new NotImplementedException();
 
-
-        [DllImport(SoftPosit)]
-        public static extern posit8_t q8_to_p8(in quire8_t q);
-
-        public static quire8_t q8_fdp_add(quire8_t q, in posit8_t a, in posit8_t b) => throw new NotImplementedException();
-
-        public static quire8_t q8_fdp_sub(quire8_t q, in posit8_t a, in posit8_t b) => throw new NotImplementedException();
-
         #endregion
 
         #region Posit (nbits=16, es=1)
