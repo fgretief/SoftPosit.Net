@@ -140,6 +140,21 @@ namespace System.Numerics.Posits.Tests
         }
 
         [Test]
+        public void TestRoundInt_Posit8()
+        {
+            Assert.That(Round(Posit8.One), Is.EqualTo(Posit8.One));
+            Assert.That(Round(new Posit8((byte)(Posit8.One.ui + 1))), Is.EqualTo(Posit8.One));
+            Assert.That(Round(Posit8.Half), Is.EqualTo(Posit8.Zero));
+            Assert.That(Round(new Posit8((byte)(Posit8.Half.ui + 1))), Is.EqualTo(Posit8.One));
+            Assert.That(Round(Posit8.Half+Posit8.One), Is.EqualTo(Posit8.Two));
+            Assert.That(Round(new Posit8((byte)((Posit8.Half + Posit8.One).ui - 1))), Is.EqualTo(Posit8.One));
+            Assert.That(Round(new Posit8((byte)((Posit8.Half + Posit8.One).ui + 1))), Is.EqualTo(Posit8.Two));
+            Assert.That(Round(Posit8.MinusOne), Is.EqualTo(Posit8.MinusOne));
+            Assert.That(Round(new Posit8((byte)(Posit8.MinusOne.ui + 1))), Is.EqualTo(Posit8.MinusOne));
+            Assert.That(Round(new Posit8((byte)(Posit8.MinusOne.ui - 1))), Is.EqualTo(Posit8.MinusOne));
+        }
+
+        [Test]
         public void TestSign_Double()
         {
             Assert.That(Math.Sign(1.0), Is.EqualTo(+1));

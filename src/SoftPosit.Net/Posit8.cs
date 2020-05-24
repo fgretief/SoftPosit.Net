@@ -521,6 +521,22 @@ namespace System.Numerics
         }
 
         /// <summary>
+        /// Rounds a <see cref="Posit8"/> number to the nearest integral value,
+        /// and rounds midpoint values to the nearest even number.
+        /// </summary>
+        /// <param name="x">A <see cref="Posit8"/> number to be rounded.</param>
+        /// <returns>
+        /// The integer nearest <paramref name="x"/>. If the fractional component
+        /// of <paramref name="x"/> is halfway between two integers, one of which
+        /// is even and the other odd, then the even number is returned. Note that
+        /// this method returns a <see cref="Posit8"/> instead of an integral type.
+        /// </returns>
+        public static Posit8 Round(Posit8 x)
+        {
+            return p8_roundToInt(x);
+        }
+
+        /// <summary>
         /// Returns an integer that indicates the sign of a <see cref="Posit8"/> number.
         /// </summary>
         /// <param name="x">A signed number.</param>
