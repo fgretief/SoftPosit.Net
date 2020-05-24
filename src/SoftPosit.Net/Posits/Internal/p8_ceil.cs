@@ -8,14 +8,8 @@ namespace System.Numerics.Posits.Internal
     {
         public static posit8_t p8_ceil(posit8_t a)
         {
-            byte mask = 0x20, scale = 0, tmp = 0;
-            bool bitNPlusOne;
-            
-            var uiA = a.ui;
-            bool sign = (uiA & (1 << 7)) != 0;
+            var (sign, uiA) = a;
 
-            // sign is True if pA > NaR.
-            if (sign) uiA = (byte)(-(sbyte)uiA);
             if (uiA == 0)
             {
                 return a;
@@ -38,6 +32,8 @@ namespace System.Numerics.Posits.Internal
             }
             else
             {
+                byte mask = 0x20, scale = 0;
+
                 while ((mask & uiA) != 0)
                 {
                     scale += 1;
@@ -47,8 +43,8 @@ namespace System.Numerics.Posits.Internal
                 mask >>= scale;
 
                 mask >>= 1;
-                tmp = (byte)(uiA & mask);
-                bitNPlusOne = tmp != 0;
+                var tmp = (byte)(uiA & mask);
+                var bitNPlusOne = tmp != 0;
                 uiA ^= tmp;
                 tmp = (byte)(uiA & (mask - 1));     //bitsMore
                 uiA ^= tmp;
@@ -58,9 +54,8 @@ namespace System.Numerics.Posits.Internal
                     uiA += (byte)(mask << 1);
                 }
             }
-            
+
             return new Posit8(sign, uiA);
         }
-
     }
 }

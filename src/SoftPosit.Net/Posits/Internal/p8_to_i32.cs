@@ -6,20 +6,15 @@ namespace System.Numerics.Posits.Internal
 
     internal static partial class Native
     {
-        public static int p8_to_i32(in posit8_t pA)
+        public static int p8_to_i32(in posit8_t a)
         {
-            int mask, iZ, tmp;
-            byte scale = 0, uiA;
-            bool bitLast, bitNPlusOne, sign;
+            if (Posit.IsNaR(a))
+            {
+                return 0; // NaR
+            }
 
-            uiA = pA.ui;                              // Copy of the input.
-                                                      // NaR
-            if (uiA == 0x80) return 0;
-
-            sign = (uiA > 0x80);                      // sign is True if pA > NaR.
-
-            if (sign) uiA = (byte)(-(sbyte)uiA & 0xFF); // A is now |A|.
-
+            var (sign, uiA) = a;                      // sign is True if pA > NaR.
+            int iZ;                                   // A is now |A|.
             if (uiA <= 0x20)
             {                                         // 0 <= |pA| <= 1/2 rounds to zero.
                 return 0;
@@ -29,7 +24,8 @@ namespace System.Numerics.Posits.Internal
                 iZ = 1;
             }
             else
-            {                                         // Decode the posit, left-justifying as we go.
+            {
+                byte scale = 0;                       // Decode the posit, left-justifying as we go.
                 uiA -= 0x40;                          // Strip off first regime bit (which is a 1).
                 while ((0x20 & uiA) != 0)
                 {                                     // Increment scale one for each regime sign bit.
@@ -40,13 +36,13 @@ namespace System.Numerics.Posits.Internal
 
                 iZ = (int)(((uint)uiA | 0x40) << 24); // Left-justify fraction in 32-bit result (one left bit padding)
 
-                mask = 0x40000000 >> scale;           // Point to the last bit of the integer part.
+                var mask = 0x40000000 >> scale;
 
-                bitLast = (iZ & mask) != 0;           // Extract the bit, without shifting it.
+                var bitLast = (iZ & mask) != 0;
                 mask >>= 1;
-                tmp = (iZ & mask);
+                int tmp = (iZ & mask);
 
-                bitNPlusOne = tmp != 0;               // "True" if nonzero.
+                var bitNPlusOne = tmp != 0;
                 iZ ^= tmp;                            // Erase the bit, if it was set.
                 tmp = iZ & (mask - 1);                // tmp has any remaining bits. // This is bitsMore
                 iZ ^= tmp;                            // Erase those bits, if any were set.
@@ -58,8 +54,8 @@ namespace System.Numerics.Posits.Internal
                 }
                 iZ = (int)((uint)iZ >> (30 - scale)); // Right-justify the integer.
             }
-            if (sign) iZ = -iZ;                       // Apply the sign of the input.
-            return iZ;
+
+            return sign ? -iZ : iZ;                   // Apply the sign of the input.
         }
     }
 }

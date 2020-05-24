@@ -6,38 +6,29 @@ namespace System.Numerics.Posits.Internal
 
     internal static partial class Native
     {
-        public static posit8_t p8_mul(in posit8_t pA, in posit8_t pB)
+        public static posit8_t p8_mul(in posit8_t a, in posit8_t b)
         {
-            sbyte kA = 0;
-
-            var signMask = Posit8.SignMask;
-
-            var uiA = pA.ui;
-            var uiB = pB.ui;
-
-            //NaR or Zero
-            if (uiA == 0x80 || uiB == 0x80)
+            if (Posit.IsNaR(a) || Posit.IsNaR(b))
             {
                 return Posit8.NaR;
             }
-            else if (uiA == 0 || uiB == 0)
+            else if (Posit.IsZero(a) || Posit.IsZero(b))
             {
                 return Posit8.Zero;
             }
 
-            bool signA = signP8UI(uiA);
-            bool signB = signP8UI(uiB);
+            var (signA, uiA) = a;
+            var (signB, uiB) = b;
             bool signZ = signA ^ signB;
-
-            if (signA) uiA = (byte)(-(sbyte)uiA & 0xFF);
-            if (signB) uiB = (byte)(-(sbyte)uiB & 0xFF);
-
             bool regSA = signregP8UI(uiA);
             bool regSB = signregP8UI(uiB);
+            var signMask = Posit8.SignMask;
 
+            sbyte kA;
             var tmp = (uiA << 2) & 0xFF;
             if (regSA)
             {
+                kA = 0;
                 while ((tmp & signMask) != 0)
                 {
                     kA++;
@@ -99,12 +90,12 @@ namespace System.Numerics.Posits.Internal
                 regime = (byte)(0x7F - (0x7F >> regA));
             }
 
-            byte uZ_ui;
+            byte uiZ;
 
             if (regA > 6)
             {
                 //max or min pos. exp and frac does not matter.
-                uZ_ui = (byte)(regSA ? 0x7F : 0x1);
+                uiZ = (byte)(regSA ? 0x7F : 0x1);
             }
             else
             {
@@ -112,23 +103,18 @@ namespace System.Numerics.Posits.Internal
                 frac16Z = (ushort)((frac16Z & 0x3FFF) >> regA);
                 fracA = (byte)(frac16Z >> 8);
                 bool bitNPlusOne = (0x80 & frac16Z) != 0;
-                uZ_ui = packToP8UI(regime, fracA);
+                uiZ = packToP8UI(regime, fracA);
 
                 //n+1 frac bit is 1. Need to check if another bit is 1 too if not round to even
                 if (bitNPlusOne)
                 {
                     // FIXME: this code is never executed for any combination of Posit8 value (p8_mul)
                     var bitsMore = (0x7F & frac16Z) != 0 ? 1 : 0;
-                    uZ_ui += (byte)((uZ_ui & 1) | bitsMore);
+                    uiZ += (byte)((uiZ & 1) | bitsMore);
                 }
             }
 
-            if (signZ)
-            {
-                uZ_ui = (byte)(-(sbyte)uZ_ui & 0xFF);
-            }
-
-            return new Posit8(uZ_ui);
+            return new Posit8(signZ, uiZ);
         }
 
     }

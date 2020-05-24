@@ -8,14 +8,14 @@ namespace System.Numerics.Posits.Internal
     {
         public static posit8_t p8_add(in posit8_t a, in posit8_t b)
         {
-            // zero or infinity
-            if (a.ui == 0 || b.ui == 0)
-            { // Not required but put here for speed
-                return new Posit8((byte)(a.ui | b.ui));
-            }
-            else if (a.ui == Posit8.SignMask || b.ui == Posit8.SignMask)
+            if (Posit.IsNaR(a) || Posit.IsNaR(b))
             {
                 return Posit8.NaR;
+            }
+
+            if (Posit.IsZero(a) || Posit.IsZero(b))
+            {   // Not required but put here for speed
+                return new Posit8((byte)(a.ui | b.ui));
             }
 
             // different signs

@@ -6,41 +6,33 @@ namespace System.Numerics.Posits.Internal
 
     internal static partial class Native
     {
-        public static posit8_t p8_div(in posit8_t pA, in posit8_t pB)
+        public static posit8_t p8_div(in posit8_t a, in posit8_t b)
         {
-            byte uiA, uiB, fracA, fracB, regA, regime;
-            bool signA, signB, signZ, regSA, regSB, bitNPlusOne = false, rcarry;
-            sbyte kA = 0;
-            //div_t divresult;
-
-            byte uZ_ui;
-
-            var signMask = Posit8.SignMask;
-
-            uiA = pA.ui;
-            uiB = pB.ui;
-
-            //Zero or infinity
-            if (uiA == 0x80 || uiB == 0x80 || uiB == 0)
+            if (Posit.IsNaR(a) || Posit.IsZeroOrNaR(b))
             {
                 return Posit8.NaR;
             }
-            else if (uiA == 0)
+            else if (Posit.IsZero(a))
             {
                 return Posit8.Zero;
             }
+            else if (a.ui == b.ui)
+            {
+                return Posit8.One;
+            }
 
-            signA = signP8UI(uiA);
-            signB = signP8UI(uiB);
-            signZ = signA ^ signB;
-            if (signA) uiA = (byte)(-(sbyte)uiA & 0xFF);
-            if (signB) uiB = (byte)(-(sbyte)uiB & 0xFF);
-            regSA = signregP8UI(uiA);
-            regSB = signregP8UI(uiB);
+            var (signA, uiA) = a;
+            var (signB, uiB) = b;
+            var signZ = signA ^ signB;
+            var regSA = signregP8UI(uiA);
+            var regSB = signregP8UI(uiB);
+            var signMask = Posit8.SignMask;
 
+            sbyte kA;
             var tmp = (uiA << 2) & 0xFF;
             if (regSA)
             {
+                kA = 0;
                 while ((tmp & signMask) != 0)
                 {
                     kA++;
@@ -57,7 +49,7 @@ namespace System.Numerics.Posits.Internal
                 }
                 tmp &= 0x7F;
             }
-            fracA = (byte)(0x80 | tmp);
+            byte fracA = (byte)(0x80 | tmp);
             ushort frac16A = (ushort)(fracA << 7);
 
             tmp = (uiB << 2) & 0xFF;
@@ -68,7 +60,6 @@ namespace System.Numerics.Posits.Internal
                     kA--;
                     tmp = (tmp << 1) & 0xFF;
                 }
-                fracB = (byte)(0x80 | tmp);
             }
             else
             {
@@ -79,9 +70,10 @@ namespace System.Numerics.Posits.Internal
                     tmp = (tmp << 1) & 0xFF;
                 }
                 tmp &= 0x7F;
-                fracB = (byte)(0x80 | (0x7F & tmp));
             }
+            byte fracB = (byte)(0x80 | tmp);
 
+            //div_t divresult;
             //divresult = div(frac16A, fracB);
             var divresult_quot = Math.DivRem(frac16A, fracB, out var divresult_rem);
             ushort frac16Z = (ushort)divresult_quot;//divresult.quot;
@@ -89,7 +81,7 @@ namespace System.Numerics.Posits.Internal
 
             if (frac16Z != 0)
             {
-                rcarry = (frac16Z >> 7) != 0; // this is the hidden bit (7th bit) , extreme right bit is bit 0
+                bool rcarry = (frac16Z >> 7) != 0;
                 if (!rcarry)
                 {
                     kA--;
@@ -97,6 +89,8 @@ namespace System.Numerics.Posits.Internal
                 }
             }
 
+            byte regA;
+            byte regime;
             if (kA < 0)
             {
                 regA = (byte)(-kA & 0xFF);
@@ -109,10 +103,12 @@ namespace System.Numerics.Posits.Internal
                 regSA = true; //1;
                 regime = (byte)(0x7F - (0x7F >> regA));
             }
+
+            byte uiZ;
             if (regA > 6)
             {
                 //max or min pos. exp and frac does not matter.
-                uZ_ui = (byte)(regSA ? 0x7F : 0x1);
+                uiZ = (byte)(regSA ? 0x7F : 0x1);
             }
             else
             {
@@ -120,8 +116,8 @@ namespace System.Numerics.Posits.Internal
                 frac16Z &= 0x7F;
                 fracA = (byte)(frac16Z >> (regA + 1));
 
-                bitNPlusOne = (0x1 & (frac16Z >> regA)) != 0;
-                uZ_ui = packToP8UI(regime, fracA);
+                var bitNPlusOne = (0x1 & (frac16Z >> regA)) != 0;
+                uiZ = packToP8UI(regime, fracA);
 
                 //uZ.ui = (uint16_t) (regime) + ((uint16_t) (expA)<< (13-regA)) + ((uint16_t)(fracA));
                 if (bitNPlusOne)
@@ -129,12 +125,11 @@ namespace System.Numerics.Posits.Internal
                     var bitsMore = (((1 << regA) - 1) & frac16Z) != 0 ? 1 : 0;
                     if (rem != 0) bitsMore = 1;
                     //n+1 frac bit is 1. Need to check if another bit is 1 too if not round to even
-                    uZ_ui += (byte)((uZ_ui & 1) | bitsMore);
+                    uiZ += (byte)((uiZ & 1) | bitsMore);
                 }
             }
-            if (signZ) uZ_ui = (byte)(-(sbyte)uZ_ui & 0xFF);
 
-            return new Posit8(uZ_ui);
+            return new Posit8(signZ, uiZ);
         }
     }
 }
