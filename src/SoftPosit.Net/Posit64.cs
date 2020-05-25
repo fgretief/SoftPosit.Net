@@ -39,6 +39,42 @@ namespace System.Numerics
 
         internal Posit64(ulong value) => ui = value;
         internal Posit64(long value) => ui = (ulong)value;
+        internal Posit64(bool sign, ulong value) => ui = sign ? (ulong) -(long)value : value;
+
+        internal void Deconstruct(out bool sign, out ulong uiAbs)
+        {
+            sign = (ui & SignMask) != 0;
+            uiAbs = sign ? (ulong) -(long)ui : ui;
+        }
+
+        internal void Deconstruct(out bool sign, out sbyte k, out ulong tmp)
+        {
+            sign = (ui & SignMask) != 0;
+            tmp = sign ? (ulong) -(long)ui : ui;
+            var signOfRegime = (tmp & (SignMask >> 1)) != 0;
+
+            tmp <<= 2;
+            if (signOfRegime)
+            {
+                k = 0;
+                while ((tmp & SignMask) != 0)
+                {
+                    k++;
+                    tmp <<= 1;
+                }
+            }
+            else
+            {
+                k = -1;
+                Debug.Assert(tmp != 0, "Zero cause infinite loop");
+                while ((tmp & SignMask) == 0)
+                {
+                    k--;
+                    tmp <<= 1;
+                }
+                tmp &= SignMask - 1;
+            }
+        }
 
         //
         // Constants for manipulating the private bit-representation

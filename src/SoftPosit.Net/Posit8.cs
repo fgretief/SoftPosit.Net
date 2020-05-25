@@ -42,7 +42,36 @@ namespace System.Numerics
         internal void Deconstruct(out bool sign, out byte uiAbs)
         {
             sign = (ui & SignMask) != 0;
-            uiAbs = (byte)(sign ? -(sbyte)ui : ui);
+            uiAbs = sign ? (byte) -(sbyte)ui : ui;
+        }
+
+        internal void Deconstruct(out bool sign, out sbyte k, out byte tmp)
+        {
+            sign = (ui & SignMask) != 0;
+            tmp = sign ? (byte) -(sbyte)ui : ui;
+            var signOfRegime = (tmp & (SignMask >> 1)) != 0;
+
+            tmp <<= 2;
+            if (signOfRegime)
+            {
+                k = 0;
+                while ((tmp & SignMask) != 0)
+                {
+                    k++;
+                    tmp <<= 1;
+                }
+            }
+            else
+            {
+                k = -1;
+                Debug.Assert(tmp != 0, "Zero cause infinite loop");
+                while ((tmp & SignMask) == 0)
+                {
+                    k--;
+                    tmp <<= 1;
+                }
+                tmp &= 0x7F;
+            }
         }
 
         //

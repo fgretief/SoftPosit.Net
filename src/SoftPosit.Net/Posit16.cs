@@ -37,6 +37,42 @@ namespace System.Numerics
 
         internal Posit16(ushort value) => ui = value;
         internal Posit16(short value) => ui = (ushort)value;
+        internal Posit16(bool sign, ushort value) => ui = sign ? (ushort) -(short)value : value;
+
+        internal void Deconstruct(out bool sign, out ushort uiAbs)
+        {
+            sign = (ui & SignMask) != 0;
+            uiAbs = sign ? (ushort) -(short)ui : ui;
+        }
+
+        internal void Deconstruct(out bool sign, out sbyte k, out ushort tmp)
+        {
+            sign = (ui & SignMask) != 0;
+            tmp = sign ? (ushort) -(short)ui : ui;
+            var signOfRegime = (tmp & (SignMask >> 1)) != 0;
+
+            tmp <<= 2;
+            if (signOfRegime)
+            {
+                k = 0;
+                while ((tmp & SignMask) != 0)
+                {
+                    k++;
+                    tmp <<= 1;
+                }
+            }
+            else
+            {
+                k = -1;
+                Debug.Assert(tmp != 0, "Zero cause infinite loop");
+                while ((tmp & SignMask) == 0)
+                {
+                    k--;
+                    tmp <<= 1;
+                }
+                tmp &= SignMask - 1;
+            }
+        }
 
         //
         // Constants for manipulating the private bit-representation
@@ -445,7 +481,7 @@ namespace System.Numerics
         }
 
         /// <summary>
-        /// Converts the numeric value of this instance to its equivalent string representation.  
+        /// Converts the numeric value of this instance to its equivalent string representation.
         /// </summary>
         /// <returns>The string representation of the value of this instance.</returns>
         public override string ToString()
