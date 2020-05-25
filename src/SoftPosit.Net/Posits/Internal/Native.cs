@@ -211,8 +211,6 @@ namespace System.Numerics.Posits.Internal
         private static extern double ConvertP64ToDouble(in posit64_t value);
 
 
-        public static posit64_t p8_to_p64(in posit8_t value) => throw new NotImplementedException();
-
         public static posit64_t p16_to_p64(in posit16_t value) => throw new NotImplementedException();
 
         public static posit64_t p32_to_p64(in posit32_t value) => throw new NotImplementedException();

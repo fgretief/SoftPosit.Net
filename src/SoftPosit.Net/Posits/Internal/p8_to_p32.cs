@@ -9,52 +9,32 @@ namespace System.Numerics.Posits.Internal
     {
         public static posit32_t p8_to_p32(in posit8_t a)
         {
-            var uiA = a.ui;
+            // input environment
+            const int psA = 8;
+            const int esA = 0;
+            // output environment
+            const int psZ = 32;
+            const int esZ = 2;
 
-            if (uiA == 0x80 || uiA == 0)
+            if (Posit.IsZeroOrNaR(a))
             {
-                return new Posit32((uint)(uiA << 24));
+                return new Posit32((uint)(a.ui << (psZ-psA)));
             }
 
-            const byte signMask = Posit8.SignMask;
+            var (sign, kA, tmp) = a;
 
-            var sign = signP8UI(uiA);
-            if (sign) uiA = (byte)(-(sbyte)uiA & 0xFF);
-            var regSA = signregP8UI(uiA);
+            var exp_frac32A = (uint)tmp << (psZ-psA-(esZ-esA));
 
-            sbyte kA = 0;
-            var tmp = (byte)((uiA << 2) & 0xFF);
-            if (regSA)
-            {
-                while ((tmp & signMask) != 0)
-                {
-                    kA++;
-                    tmp = (byte)((tmp << 1) & 0xFF);
-                }
-            }
-            else
-            {
-                kA = -1;
-                while ((tmp & signMask) == 0)
-                {
-                    kA--;
-                    tmp = (byte)((tmp << 1) & 0xFF);
-                }
-                tmp &= 0x7F;
-            }
-            var exp_frac32A = (uint)(tmp << 22);
-
-            uint regime;
             sbyte regA;
+            uint regime;
             if (kA < 0)
             {
                 regA = (sbyte) -kA;
                 // Place exponent bits
-                exp_frac32A |= (uint)(((regA & 0x1) | ((regA + 1) & 0x2)) << 29);
+                exp_frac32A |= (uint)(((regA & 1) | ((regA + 1) & 2)) << 29);
 
                 regA = (sbyte)((regA + 3) >> 2);
                 if (regA == 0) regA = 1;
-                regSA = false;//0;
                 regime = 0x40000000u >> regA;
             }
             else
@@ -63,18 +43,13 @@ namespace System.Numerics.Posits.Internal
 
                 regA = (sbyte)((kA + 4) >> 2);
                 if (regA == 0) regA = 1;
-                regSA = false;//1;
                 regime = 0x7FFFFFFFu - (0x7FFFFFFFu >> regA);
             }
 
-            exp_frac32A = ((uint)exp_frac32A) >> (regA + 1); //2 because of sign and regime terminating bit
+            exp_frac32A >>= regA + 1; //2 because of sign and regime terminating bit
 
-            var uZ_ui = regime + exp_frac32A;
-
-            if (sign) uZ_ui = (uint)(-(int)uZ_ui & 0xFFFFFFFF);
-
-            return new Posit32(uZ_ui);
+            var uiZ = regime + exp_frac32A;
+            return new Posit32(sign, uiZ);
         }
-
     }
 }
