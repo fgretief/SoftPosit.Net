@@ -178,6 +178,13 @@ namespace System.Numerics.Posits.Tests
         }
 
         [Test]
+        public void TestLog_Posit8()
+        {
+            Assert.That(Log(Posit8.NaR), Is.EqualTo(Posit8.NaR));
+            // TODO: add more assertions
+        }
+
+        [Test]
         public void TestRoundInt_Posit8()
         {
             Assert.That(Round(Posit8.One), Is.EqualTo(Posit8.One));

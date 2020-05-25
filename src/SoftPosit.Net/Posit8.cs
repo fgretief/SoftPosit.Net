@@ -564,6 +564,17 @@ namespace System.Numerics
         }
 
         /// <summary>
+        /// Returns the natural (base e) logarithm of a specified number.
+        /// </summary>
+        /// <param name="x">The number whose logarithm is to be found.</param>
+        /// <returns>The natural logarithm of <paramref name="x"/>; that is, ln x, or log e x. </returns>
+        /// <remarks>Parameter <paramref name="x"/> is specified as a base 10 number.</remarks>
+        public static Posit8 Log(Posit8 x)
+        {
+            return p8_log(x);
+        }
+
+        /// <summary>
         /// Rounds a <see cref="Posit8"/> number to the nearest integral value,
         /// and rounds midpoint values to the nearest even number.
         /// </summary>
