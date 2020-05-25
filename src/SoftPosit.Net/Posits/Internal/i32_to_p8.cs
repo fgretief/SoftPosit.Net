@@ -44,7 +44,7 @@ namespace System.Numerics.Posits.Internal
 
                 fracA = (fracA ^ 0x40);
 
-                uiA = (byte)((0x7F ^ (0x3F >> k)) | (fracA >> (k + 1)));
+                uiA = (byte)((0x7F ^ (0x3F >> k)) | (byte)(fracA >> (k + 1)));
 
                 var mask = 0x1 << k; //bitNPlusOne
                 if ((mask & fracA) != 0)

@@ -31,7 +31,7 @@ namespace System.Numerics.Posits.Internal
 
                 var k = log2;
                 fracA = (fracA ^ mask);
-                uiA = (byte)((ulong)(0x7F ^ (0x3F >> k)) | (fracA >> (k + 1)));
+                uiA = (byte)((0x7F ^ (0x3F >> k)) | (byte)(fracA >> (k + 1)));
 
                 mask = 0x1ul << k; //bitNPlusOne
                 if ((mask & fracA) != 0)

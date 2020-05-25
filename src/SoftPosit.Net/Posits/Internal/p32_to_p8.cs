@@ -82,7 +82,7 @@ namespace System.Numerics.Posits.Internal
                 if ((exp_frac32A & (0x2000000 << regA)) != 0)
                 {
                     var bitsMore = exp_frac32A & (0xFFFFFFFF >> (7 - regA));
-                    uZ_ui += (byte)((uZ_ui & 1) | bitsMore);
+                    uZ_ui += (byte)((byte)(uZ_ui & 1) | bitsMore);
                 }
             }
 
