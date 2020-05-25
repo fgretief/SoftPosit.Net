@@ -575,6 +575,44 @@ namespace System.Numerics
         }
 
         /// <summary>
+        /// Returns the larger of two <see cref="Posit8"/> numbers.
+        /// </summary>
+        /// <param name="x">The first of two <see cref="Posit8"/> numbers to compare.</param>
+        /// <param name="y">The second of two <see cref="Posit8"/> numbers to compare.</param>
+        /// <returns>
+        /// Parameter <paramref name="x"/> or <paramref name="y"/>,
+        /// whichever is larger. If <paramref name="x"/>, or <paramref name="y"/>,
+        /// or both <paramref name="x"/> and <paramref name="y"/>
+        /// are equal to <c>NaR</c>, that value is returned.
+        /// </returns>
+        public static Posit8 Max(Posit8 x, Posit8 y)
+        {
+            if (Posit.IsNaR(x) || Posit.IsNaR(y))
+                return Posit8.NaR;
+
+            return x > y ? x : y;
+        }
+
+        /// <summary>
+        /// Returns the smaller of <see cref="Posit8"/> numbers.
+        /// </summary>
+        /// <param name="x">The first of two <see cref="Posit8"/> numbers to compare.</param>
+        /// <param name="y">The second of two <see cref="Posit8"/> numbers to compare.</param>
+        /// <returns>
+        /// Parameter <paramref name="x"/> or <paramref name="y"/>,
+        /// whichever is smaller. If <paramref name="x"/>, <paramref name="y"/>,
+        /// or both <paramref name="x"/> and <paramref name="y"/>
+        /// are equal to <c>NaR</c>, that value is returned.
+        /// </returns>
+        public static Posit8 Min(Posit8 x, Posit8 y)
+        {
+            if (Posit.IsNaR(x) || Posit.IsNaR(y))
+                return Posit8.NaR;
+
+            return x <= y ? x : y;
+        }
+
+        /// <summary>
         /// Rounds a <see cref="Posit8"/> number to the nearest integral value,
         /// and rounds midpoint values to the nearest even number.
         /// </summary>

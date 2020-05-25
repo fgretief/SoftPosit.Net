@@ -185,6 +185,28 @@ namespace System.Numerics.Posits.Tests
         }
 
         [Test]
+        public void TestMax_Posit8()
+        {
+            Assert.That(Max(Posit8.NaR, Posit8.NaR), Is.EqualTo(Posit8.NaR));
+            Assert.That(Max(Posit8.Zero, Posit8.NaR), Is.EqualTo(Posit8.NaR));
+            Assert.That(Max(Posit8.NaR, Posit8.Zero), Is.EqualTo(Posit8.NaR));
+            Assert.That(Max(Posit8.One, Posit8.Two), Is.EqualTo(Posit8.Two));
+            Assert.That(Max(Posit8.MinusOne, Posit8.Zero), Is.EqualTo(Posit8.Zero));
+            // TODO: add more assertions
+        }
+
+        [Test]
+        public void TestMin_Posit8()
+        {
+            Assert.That(Min(Posit8.NaR, Posit8.NaR), Is.EqualTo(Posit8.NaR));
+            Assert.That(Min(Posit8.Zero, Posit8.NaR), Is.EqualTo(Posit8.NaR));
+            Assert.That(Min(Posit8.NaR, Posit8.Zero), Is.EqualTo(Posit8.NaR));
+            Assert.That(Min(Posit8.One, Posit8.Two), Is.EqualTo(Posit8.One));
+            Assert.That(Min(Posit8.MinusOne, Posit8.Zero), Is.EqualTo(Posit8.MinusOne));
+            // TODO: add more assertions
+        }
+
+        [Test]
         public void TestRoundInt_Posit8()
         {
             Assert.That(Round(Posit8.One), Is.EqualTo(Posit8.One));
