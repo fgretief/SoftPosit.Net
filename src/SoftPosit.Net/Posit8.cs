@@ -544,6 +544,16 @@ namespace System.Numerics
         }
 
         /// <summary>
+        /// Returns <c>e</c> raised to the specified power.
+        /// </summary>
+        /// <param name="x">A number specifying a power.</param>
+        /// <returns>The number <c>e</c> raised to the power <paramref name="x"/>. If <paramref name="x"/> equals NaR, that value is returned.</returns>
+        public static Posit8 Exp(Posit8 x)
+        {
+            return p8_exp(x);
+        }
+
+        /// <summary>
         /// Returns the largest integral value less than or equal to the specified <see cref="Posit8"/> number.
         /// </summary>
         /// <param name="x">A <see cref="Posit8"/> number.</param>

@@ -156,6 +156,13 @@ namespace System.Numerics.Posits.Tests
         }
 
         [Test]
+        public void TestExp_Posit8()
+        {
+            Assert.That(Exp(Posit8.NaR), Is.EqualTo(Posit8.NaR));
+            // TODO: add more tests
+        }
+
+        [Test]
         public void TestFloor_Posit8()
         {
             Assert.That(Floor(Posit8.NaR), Is.EqualTo(Posit8.NaR));
