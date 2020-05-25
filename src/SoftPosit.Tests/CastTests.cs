@@ -596,6 +596,28 @@ namespace System.Numerics.Posits.Tests
             Assert.That(pC.ui, Is.EqualTo(pB.ui));
         }
 
+        [TestCase(0, 0u, "Zero")]
+        [TestCase(0x8000, 0x8000_0000u, "NaR")]
+        [TestCase(0x4000, 0x4000_0000u, "1")]
+        [TestCase(0xC000, 0xC000_0000u, "-1")]
+        [TestCase(0x7FFF, 0x7F80_0000u, "+maxpos")]
+        [TestCase(0x0001, 0x0080_0000u, "+minpos")]
+        [TestCase(0x8001, 0x8080_0000u, "-maxpos")]
+        [TestCase(0xFFFF, 0xFF80_0000u, "-minpos")]
+
+        [TestCase(0x3000, 0x3800_0000u, "0.5")]
+        [TestCase(0xD000, 0xC800_0000u, "-0.5")]
+        [TestCase(0x5000, 0x4800_0000u, "2")]
+        [TestCase(0xB000, 0xB800_0000u, "-2")]
+        public void TestPosit16ToPosit32Cast(int uiA, uint uiB, string op)
+        {
+            var pA = new Posit16((ushort)uiA);
+            var pB = new Posit32(uiB);
+            var pC = (Posit32)pA;
+
+            Assert.That(pC.ui, Is.EqualTo(pB.ui));
+        }
+
         [TestCase(0u, 0, "0")] // Zero
         [TestCase(0x8000_0000u, 0x80, "NaR")]
         [TestCase(0x4000_0000u, 0x40, "1")]
@@ -617,6 +639,32 @@ namespace System.Numerics.Posits.Tests
             var pC = (Posit8)pA;
 
             Console.WriteLine("A=0x{0:X4}, B=0x{1:X2}, C=0x{2:X2}", pA.ui, pB.ui, pC.ui);
+
+            Assert.That(pC.ui, Is.EqualTo(pB.ui));
+        }
+
+        [TestCase(0u, 0ul, "0")] // Zero
+        [TestCase(0x8000_0000u, 0x8000_0000_0000_0000ul, "NaR")]
+        [TestCase(0x4000_0000u, 0x4000_0000_0000_0000ul, "1")]
+        [TestCase(0xC000_0000u, 0xC000_0000_0000_0000ul, "-1")]
+
+        [TestCase(0x7FFF_FFFFu, 0x7FFF_8000_0000_0000ul, "+maxpos")]
+        [TestCase(0x0000_0001u, 0x0000_8000_0000_0000ul, "+minpos")]
+        [TestCase(0x8000_0001u, 0x8000_8000_0000_0000ul, "-maxpos")]
+        [TestCase(0xFFFF_FFFFu, 0xFFFF_8000_0000_0000ul, "-minpos")]
+
+        [TestCase(0x7FFF_FFFEu, 0x7FFF_4000_0000_0000ul, "+(maxpos-1)")]
+        [TestCase(0x0000_0002u, 0x0000_C000_0000_0000ul, "+(minpos+1)")]
+        // ps=32, es=2, k=30, e=0, f=0  <-->  ps=64, es=3, k=15, e=0, f=0
+        //  +0111_1111_1111_1111_1111_1111_1111_1111 => 0x7FFF_FFFF
+        //  +0111_1111_1111_1111_1000_0000_0000_0000_0000_0000_0000_0000_0000_0000_0000_0000 => 0x7FFF_8000_0000_0000
+        public void TestPosit32ToPosit64Cast(uint uiA, ulong uiB, string op)
+        {
+            var pA = new Posit32(uiA);
+            var pB = new Posit64(uiB);
+            var pC = (Posit64)pA;
+
+            //Console.WriteLine("A=0x{0:X8}, B=0x{1:X16}, C=0x{2:X16}", pA.ui, pB.ui, pC.ui);
 
             Assert.That(pC.ui, Is.EqualTo(pB.ui));
         }
