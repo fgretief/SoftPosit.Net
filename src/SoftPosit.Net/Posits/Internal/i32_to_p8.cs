@@ -55,8 +55,8 @@ namespace System.Numerics.Posits.Internal
                     }
                 }
             }
-            var uZ_ui = sign ? -uiA & 0xFF : uiA;
-            return new Posit8((byte)uZ_ui);
+
+            return new Posit8(sign, uiA);
         }
     }
 }

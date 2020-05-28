@@ -9,44 +9,19 @@ namespace System.Numerics.Posits.Internal
     {
         public static posit8_t p16_to_p8(in posit16_t a)
         {
+            const int psA = 16;
+            const int psZ = 8;
+
             if (Posit.IsZeroOrNaR(a))
             {
-                return new Posit8((byte)(a.ui >> 8));
+                return new Posit8((byte)(a.ui >> (psA-psZ)));
             }
 
-            var signMask = Posit16.SignMask;
+            var (sign, kA, tmp) = a;
 
-            var uiA = a.ui;
-            var sign = signP16UI(uiA);
-            if (sign) uiA = (ushort) -(short)uiA;
-            var regSA = signregP16UI(uiA);
-
-            sbyte kA;
-            var tmp = (ushort)(uiA << 2);
-            if (regSA)
-            {
-                kA = 0;
-                while ((tmp & signMask) != 0)
-                {
-                    kA++;
-                    tmp = (ushort)(tmp << 1);
-                }
-            }
-            else
-            {
-                kA = -1;
-                while ((tmp & signMask) == 0)
-                {
-                    kA--;
-                    tmp = (ushort)(tmp << 1);
-                }
-                tmp &= 0x7FFF;
-            }
-
-            byte uZ_ui;
-            byte regime;
-            ushort exp_frac16A;
             sbyte regA;
+            ushort exp_frac16A;
+            byte uZ_ui;
 
             if (kA < -3 || kA >= 3)
             {
@@ -56,19 +31,19 @@ namespace System.Numerics.Posits.Internal
             }
             else
             {
+                byte regime;
+
                 //2nd bit exp
                 exp_frac16A = tmp;
                 if (kA < 0)
                 {
                     regA = (sbyte)(((-kA) << 1) - (exp_frac16A >> 14));
                     if (regA == 0) regA = 1;
-                    regSA = false;//0;
                     regime = (byte)(0x40 >> regA);
                 }
                 else
                 {
                     regA = (sbyte)((kA == 0) ? (1 + (exp_frac16A >> 14)) : (((kA + 1) << 1) + (exp_frac16A >> 14) - 1));
-                    regSA = true;//1;
                     regime = (byte)(0x7F - (0x7F >> regA));
                 }
 
@@ -90,9 +65,7 @@ namespace System.Numerics.Posits.Internal
                 uZ_ui += (byte)((uZ_ui & 1) | bitsMore);
             }
 
-            if (sign) uZ_ui = (byte)(-(sbyte)uZ_ui);
-
-            return new Posit8(uZ_ui);
+            return new Posit8(sign, uZ_ui);
         }
     }
 }
