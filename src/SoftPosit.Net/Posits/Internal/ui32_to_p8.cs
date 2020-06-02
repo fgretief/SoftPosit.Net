@@ -1,5 +1,7 @@
 ﻿// SPDX-License-Identifier: MIT
 
+using System.Diagnostics;
+
 namespace System.Numerics.Posits.Internal
 {
     using posit8_t = Posit8;
@@ -43,6 +45,8 @@ namespace System.Numerics.Posits.Internal
                         uiA++;
                     }
                 }
+
+                Debug.Assert(uiA == ConvertUIntToPositImpl(a, 6, 8, 0));
             }
 
             return new Posit8((byte)uiA);

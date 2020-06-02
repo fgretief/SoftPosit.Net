@@ -107,6 +107,114 @@ namespace System.Numerics.Posits.Tests
             Assert.That(x.ui, Is.EqualTo(p.ui));
         }
 
+        [TestCase(0u, 0)]
+        [TestCase(1u, 0x4000)]
+        [TestCase(2u, 0b0101_0000_0000_0000)]
+        [TestCase(3u, 0b0101_1000_0000_0000)]
+        [TestCase(4u, 0b0110_0000_0000_0000)]
+        [TestCase(5u, 0b0110_0010_0000_0000)]
+        [TestCase(6u, 0b0110_0100_0000_0000)]
+        [TestCase(7u, 0b0110_0110_0000_0000)]
+        [TestCase(8u, 0b0110_1000_0000_0000)]
+        [TestCase(9u, 0b0110_1001_0000_0000)]
+
+        [TestCase(510u, 0x7CFE)]
+        [TestCase(511u, 0x7CFF)]
+        [TestCase(512u, 0x7D00)]
+        [TestCase(513u, 0x7D00)] // round down to 512 (tie)
+        [TestCase(514u, 0x7D01)]
+        [TestCase(515u, 0x7D02)] // round up to 516 (tie)
+        [TestCase(516u, 0x7D02)]
+
+        [TestCase(1022u, 0x7DFF)]
+        [TestCase(1023u, 0x7E00)] // round up to 1024 (tie)
+        [TestCase(1024u, 0x7E00)]
+        [TestCase(1025u, 0x7E00)] // round down to 1024
+
+        [TestCase(25165824u, 0x7FFC)] // tie
+        [TestCase(25165825u, 0x7FFD)]
+        [TestCase(50331647u, 0x7FFD)]
+        [TestCase(50331648u, 0x7FFE)] // tie
+        [TestCase(50331649u, 0x7FFE)]
+        [TestCase(134217728u, 0x7FFE)]
+        [TestCase(167772160u, 0x7FFE)] // tie
+        [TestCase(167772161u, 0x7FFF)]
+        [TestCase(268435456u, 0x7FFF)] // +maxpos
+        [TestCase(uint.MaxValue, 0x7FFF)] // +maxpos
+        public void TestUInt32ToPosit16Cast(uint value, int ui)
+        {
+            var p = new Posit16((ushort)ui);
+
+            var x = (Posit16)value;
+
+            Assert.That(x.ui, Is.EqualTo(p.ui));
+        }
+
+        [TestCase(0u, 0x0000_0000u)]
+        [TestCase(1u, 0x4000_0000u)]
+        [TestCase(2u, 0x4800_0000u)]
+        [TestCase(3u, 0x4C00_0000u)]
+        [TestCase(4u, 0x5000_0000u)]
+        [TestCase(5u, 0x5200_0000u)]
+        [TestCase(6u, 0x5400_0000u)]
+        [TestCase(7u, 0x5600_0000u)]
+        [TestCase(8u, 0x5800_0000u)]
+        [TestCase(9u, 0x5900_0000u)]
+
+        [TestCase(510u, 0x71FC_0000u)]
+        [TestCase(511u, 0x71FE_0000u)]
+        [TestCase(512u, 0x7200_0000u)]
+        [TestCase(513u, 0x7201_0000u)]
+        [TestCase(514u, 0x7202_0000u)]
+        [TestCase(515u, 0x7203_0000u)]
+        [TestCase(516u, 0x7204_0000u)]
+
+        [TestCase(2147479552u, 0x7FAF_FFFCu)] // exact
+        [TestCase(2147480064u, 0x7FAF_FFFCu)] // tie (round down)
+        [TestCase(2147480576u, 0x7FAF_FFFDu)] // exact
+        [TestCase(2147481088u, 0x7FAF_FFFEu)] // tie (round up)
+        [TestCase(2147481600u, 0x7FAF_FFFEu)] // exact
+        [TestCase(2147482112u, 0x7FAF_FFFEu)] // tie (round down)
+        [TestCase(2147482624u, 0x7FAF_FFFFu)] // exact
+        [TestCase(2147482625u, 0x7FAF_FFFFu)] // round down
+        [TestCase(2147483135u, 0x7FAF_FFFFu)] // round down
+        [TestCase(2147483136u, 0x7FB0_0000u)] // tie (round up)
+        [TestCase((uint)int.MaxValue, 0x7FB0_0000u)] // 2^31
+
+        [TestCase(4294961152u, 0x7FBF_FFFDu)] // exact (0xFFFFE800)
+        [TestCase(4294963200u, 0x7FBF_FFFEu)] // exact (0xFFFFF000)
+        [TestCase(4294965248u, 0x7FBF_FFFFu)] // exact (0xFFFFF800)
+        [TestCase(4294966271u, 0x7FBF_FFFFu)] // round down
+        [TestCase(4294966272u, 0x7FC0_0000u)] // tie (round up)
+        [TestCase(uint.MaxValue, 0x7FC0_0000u)] // (2^32)-1
+        public void TestUInt32ToPosit32Cast(uint value, uint ui)
+        {
+            var p = new Posit32(ui);
+
+            var x = (Posit32)value;
+
+            Assert.That(x.ui, Is.EqualTo(p.ui));
+        }
+
+        [TestCase(0u, 0ul)]
+        [TestCase(1u, 0x4000_0000_0000_0000ul)]
+        [TestCase(2u, 0x4400_0000_0000_0000ul)]
+        [TestCase(3u, 0x4600_0000_0000_0000ul)]
+        [TestCase(4u, 0x4800_0000_0000_0000ul)]
+        [TestCase(5u, 0x4900_0000_0000_0000ul)]
+        [TestCase(512u, 0x6200_0000_0000_0000ul)]
+        [TestCase(768u, 0x6300_0000_0000_0000ul)]
+        [TestCase(uint.MaxValue / 2, 0x7B7F_FFFF_FE00_0000ul)]
+        [TestCase(uint.MaxValue, 0x7BFF_FFFF_FF00_0000ul)]
+        public void TestUInt32ToPosit64Cast(uint value, ulong ui)
+        {
+            var p = new Posit64(ui);
+
+            var x = (Posit64)value;
+
+            Assert.That(x.ui, Is.EqualTo(p.ui));
+        }
+
         [TestCase(0b1000_0000, 0)] // NaR
 
         [TestCase(0b0000_0000, 0)] // Zero
