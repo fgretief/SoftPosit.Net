@@ -57,6 +57,7 @@ namespace System.Numerics.Posits.Internal
             Console.WriteLine("        exp = {0} ({1})", expZ.TopBits(psZ), log2 % (1 << esZ));
             Console.WriteLine("       frac = {0} ({1})", fracZ.TopBits(psZ), fracShift < 0 ? $"<<{-fracShift}" : $">>{fracShift}");
             Console.WriteLine("        uiZ = {0}", uiZ.TopBits(psZ));
+            Console.WriteLine("            = {0}", uiZ.ToFormula(psZ, esZ));
             Console.WriteLine();
             Console.WriteLine("      nbits = {0}", nbits);
             Console.WriteLine("      shift = {0}", fracShift);

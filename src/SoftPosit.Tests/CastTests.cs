@@ -508,6 +508,172 @@ namespace System.Numerics.Posits.Tests
             Assert.That(x.ui, Is.EqualTo(p.ui));
         }
 
+        [TestCase(0L, 0x0000)]
+        [TestCase(1L, 0x4000)]
+        [TestCase(2L, 0x5000)]
+        [TestCase(3L, 0x5800)]
+        [TestCase(4L, 0x6000)]
+        [TestCase(5L, 0x6200)]
+        [TestCase(512L, 0x7D00)]
+        [TestCase(768L, 0x7D80)]
+
+        [TestCase(16777216, 0x7FFC)] // exact
+
+        [TestCase(25165823, 0x7FFC)] // round down
+        [TestCase(25165824, 0x7FFC)] // round down (tie)
+        [TestCase(25165825, 0x7FFD)] // round up
+
+        [TestCase(33554432, 0x7FFD)] // exact
+
+        [TestCase(50331647, 0x7FFD)] // round down
+        [TestCase(50331648, 0x7FFE)] // round up (tie)
+        [TestCase(50331649, 0x7FFE)] // round up
+
+        [TestCase(67108864, 0x7FFE)] // exact
+
+        [TestCase(167772159, 0x7FFE)] // round down
+        [TestCase(167772160, 0x7FFE)] // round down (tie)
+        [TestCase(167772161, 0x7FFF)] // round up
+
+        [TestCase(268435456, 0x7FFF)] // exact / +maxpos
+        [TestCase(long.MaxValue, 0x7FFF)]
+
+        [TestCase(-1L, 0xC000)]
+        [TestCase(-2L, 0xB000)]
+
+        [TestCase(-33554432, 0x8003)] // exact
+
+        [TestCase(-50331647, 0x8003)] // round up
+        [TestCase(-50331648, 0x8002)] // round down (tie)
+        [TestCase(-50331649, 0x8002)] // round down
+
+        [TestCase(-67108864, 0x8002)] // exact
+
+        [TestCase(-167772159, 0x8002)] // round up
+        [TestCase(-167772160, 0x8002)] // round up (tie)
+        [TestCase(-167772161, 0x8001)] // round down
+
+        [TestCase(-268435456, 0x8001)] // exact / -minpos
+        [TestCase(long.MinValue, 0x8001)]
+
+        public void TestInt64ToPosit16Cast(long value, int ui)
+        {
+            var p = new Posit16((ushort)ui);
+
+            var x = (Posit16)value;
+
+            //Console.WriteLine();
+            //Console.WriteLine("expected = 0x{0:X4}", p.ui);
+            //Console.WriteLine("         = {0}", ((ulong)p.ui).TopBits(16));
+            //Console.WriteLine("         = {0}", ((ulong)p.ui).ToFormula(16, 1));
+            //Console.WriteLine("  actual = 0x{0:X4}", x.ui);
+            //Console.WriteLine("         = {0}", ((ulong)x.ui).TopBits(16));
+            //Console.WriteLine("         = {0}", ((ulong)x.ui).ToFormula(16, 1));
+
+            Assert.That(x.ui, Is.EqualTo(p.ui));
+        }
+
+        [TestCase(0L, 0x0000_0000u)]
+        [TestCase(1L, 0x4000_0000u)]
+        [TestCase(2L, 0x4800_0000u)]
+        [TestCase(3L, 0x4C00_0000u)]
+        [TestCase(4L, 0x5000_0000u)]
+        [TestCase(5L, 0x5200_0000u)]
+        [TestCase(512L, 0x7200_0000u)]
+        [TestCase(768L, 0x7300_0000u)]
+
+        [TestCase(2305843009213693952L, 0x7FFF_9000u)] // exact
+        [TestCase(4611686018427387904L, 0x7FFF_A000u)] // exact
+
+        [TestCase(9218868437227405312L, 0x7FFF_AFFCu)] // exact
+        [TestCase(9219431387180826624L, 0x7FFF_AFFCu)] // round down (tie)
+        [TestCase(9219994337134247936L, 0x7FFF_AFFDu)] // exact
+        [TestCase(9220557287087669248L, 0x7FFF_AFFEu)] // round up (tie)
+        [TestCase(9221120237041090560L, 0x7FFF_AFFEu)] // exact
+        [TestCase(9221120237041090561L, 0x7FFF_AFFEu)] // round down
+        [TestCase(9221683186994511872L, 0x7FFF_AFFEu)] // round down (tie)
+        [TestCase(9222246136947933183L, 0x7FFF_AFFFu)] // round up
+        [TestCase(9222246136947933184L, 0x7FFF_AFFFu)] // exact
+        [TestCase(9222246136947933185L, 0x7FFF_AFFFu)] // round down
+        [TestCase(9222809086901354495L, 0x7FFF_AFFFu)] // round down
+        [TestCase(9222809086901354496L, 0x7FFF_B000u)] // round up (tie)
+        [TestCase(9222809086901354497L, 0x7FFF_B000u)] // round up
+        [TestCase(long.MaxValue, 0x7FFF_B000u)] // round up
+
+        [TestCase(-1L, 0xC000_0000u)]
+        [TestCase(-2L, 0xB800_0000u)]
+        [TestCase(-3L, 0xB400_0000u)]
+        [TestCase(-9222246136947933184L, 0x80005001u)] // exact
+        [TestCase(-9222809086901354495L, 0x80005001u)] // round up
+        [TestCase(-9222809086901354496L, 0x80005000u)] // round down (tie)
+        [TestCase(long.MinValue, 0x80005000u)]
+        public void TestInt64ToPosit32Cast(long value, uint ui)
+        {
+            var p = new Posit32(ui);
+
+            var x = (Posit32)value;
+
+            //Console.WriteLine();
+            //Console.WriteLine("expected = 0x{0:X8}", p.ui);
+            //Console.WriteLine("         = {0}", ((ulong)p.ui).TopBits(32));
+            //Console.WriteLine("         = {0}", ((ulong)p.ui).ToFormula(32, 2));
+            //Console.WriteLine("  actual = 0x{0:X8}", x.ui);
+            //Console.WriteLine("         = {0}", ((ulong)x.ui).TopBits(32));
+            //Console.WriteLine("         = {0}", ((ulong)x.ui).ToFormula(32, 2));
+
+            Assert.That(x.ui, Is.EqualTo(p.ui));
+        }
+
+        [TestCase(0L, 0ul)]
+        [TestCase(1L, 0x4000_0000_0000_0000ul)]
+        [TestCase(2L, 0x4400_0000_0000_0000ul)]
+        [TestCase(3L, 0x4600_0000_0000_0000ul)]
+        [TestCase(4L, 0x4800_0000_0000_0000ul)]
+        [TestCase(5L, 0x4900_0000_0000_0000ul)]
+        [TestCase(512L, 0x6200_0000_0000_0000ul)]
+        [TestCase(768L, 0x6300_0000_0000_0000ul)]
+
+        [TestCase(4503599627370491L, 0x7F3F_FFFF_FFFF_FFF6ul)]
+        [TestCase(4503599627370492L, 0x7F3F_FFFF_FFFF_FFF8ul)]
+        [TestCase(4503599627370493L, 0x7F3F_FFFF_FFFF_FFFAul)]
+        [TestCase(4503599627370494L, 0x7F3F_FFFF_FFFF_FFFCul)]
+        [TestCase(4503599627370495L, 0x7F3F_FFFF_FFFF_FFFEul)]
+        [TestCase(4503599627370496L, 0x7F40_0000_0000_0000ul)]
+        [TestCase(4503599627370497L, 0x7F40_0000_0000_0001ul)]
+        [TestCase(4503599627370498L, 0x7F40_0000_0000_0002ul)]
+        [TestCase(4503599627370499L, 0x7F40_0000_0000_0003ul)]
+
+        [TestCase(4611686018427386880L, 0x7FAF_FFFF_FFFF_FFFFul)] // exact
+        [TestCase(4611686018427386881L, 0x7FAF_FFFF_FFFF_FFFFul)]
+        [TestCase(4611686018427387391L, 0x7FAF_FFFF_FFFF_FFFFul)] // round down
+        [TestCase(4611686018427387392L, 0x7FB0_0000_0000_0000ul)] // round up (tie)
+        [TestCase(4611686018427387393L, 0x7FB0_0000_0000_0000ul)] // round up
+        [TestCase(4611686018427387903L, 0x7FB0_0000_0000_0000ul)]
+        [TestCase(4611686018427387904L, 0x7FB0_0000_0000_0000ul)] // exact
+
+        [TestCase(9223372036854771712L, 0x7FB7_FFFF_FFFF_FFFEul)] // exact
+        [TestCase(9223372036854771713L, 0x7FB7_FFFF_FFFF_FFFEul)]
+        [TestCase(9223372036854772735L, 0x7FB7_FFFF_FFFF_FFFEul)] // round down
+        [TestCase(9223372036854772736L, 0x7FB7_FFFF_FFFF_FFFEul)] // round down (tie)
+        [TestCase(9223372036854772737L, 0x7FB7_FFFF_FFFF_FFFFul)] // round up
+        [TestCase(9223372036854773759L, 0x7FB7_FFFF_FFFF_FFFFul)]
+        [TestCase(9223372036854773760L, 0x7FB7_FFFF_FFFF_FFFFul)] // exact
+        [TestCase(9223372036854773761L, 0x7FB7_FFFF_FFFF_FFFFul)]
+        [TestCase(long.MaxValue, 0x7FB7_FFFF_FFFF_FFFFul)]
+
+        [TestCase(-1L, 0xC000_0000_0000_0000ul)]
+        [TestCase(-2L, 0xBC00_0000_0000_0000ul)]
+        [TestCase(long.MinValue + 1, 0x8048_0000_0000_0001ul)]
+        [TestCase(long.MinValue, 0x8048_0000_0000_0000ul)]
+        public void TestInt64ToPosit64Cast(long value, ulong ui)
+        {
+            var p = new Posit64(ui);
+
+            var x = (Posit64)value;
+
+            Assert.That(x.ui, Is.EqualTo(p.ui));
+        }
+
         [TestCase(ulong.MinValue, 0b0000_0000)]
         [TestCase(1ul, 0b0100_0000)]
         [TestCase(2ul, 0b0110_0000)]

@@ -52,8 +52,6 @@ namespace System.Numerics.Posits.Internal
         public static posit16_t p16_sqrt(in posit16_t a) => throw new NotImplementedException();
 
 
-        public static posit16_t i64_to_p16(in long value) => throw new NotImplementedException();
-
         public static posit16_t f32_to_p16(in float value) => ConvertDoubleToP16(value);
 
         public static posit16_t f64_to_p16(in double value) => ConvertDoubleToP16(value);
@@ -112,8 +110,6 @@ namespace System.Numerics.Posits.Internal
         public static posit32_t p32_sqrt(in posit32_t a) => throw new NotImplementedException();
 
 
-        public static posit32_t i64_to_p32(in long value) => throw new NotImplementedException();
-
         public static posit32_t f32_to_p32(in float value) => ConvertDoubleToP32(value);
 
         public static posit32_t f64_to_p32(in double value) => ConvertDoubleToP32(value);
@@ -164,8 +160,6 @@ namespace System.Numerics.Posits.Internal
 
         public static posit64_t p64_sqrt(in posit64_t a) => throw new NotImplementedException();
 
-
-        public static posit64_t i64_to_p64(in long value) => throw new NotImplementedException();
 
         public static posit64_t f32_to_p64(in float value) => ConvertDoubleToP64(value);
 
