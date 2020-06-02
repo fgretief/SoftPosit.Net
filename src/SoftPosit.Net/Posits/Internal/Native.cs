@@ -64,8 +64,6 @@ namespace System.Numerics.Posits.Internal
 
         public static uint p16_to_ui32(in posit16_t value) => throw new NotImplementedException();
 
-        public static long p16_to_i64(in posit16_t value) => throw new NotImplementedException();
-
         public static float p16_to_f32(in posit16_t value) => (float)ConvertP16ToDouble(value);
 
         public static double p16_to_f64(in posit16_t value) => ConvertP16ToDouble(value);
@@ -120,8 +118,6 @@ namespace System.Numerics.Posits.Internal
 
         public static uint p32_to_ui32(in posit32_t value) => throw new NotImplementedException();
 
-        public static long p32_to_i64(in posit32_t value) => throw new NotImplementedException();
-
         public static float p32_to_f32(in posit32_t value) => (float)ConvertP32ToDouble(value);
 
         public static double p32_to_f64(in posit32_t value) => ConvertP32ToDouble(value);
@@ -168,8 +164,6 @@ namespace System.Numerics.Posits.Internal
         public static int p64_to_i32(in posit64_t value) => throw new NotImplementedException();
 
         public static uint p64_to_ui32(in posit64_t value) => throw new NotImplementedException();
-
-        public static long p64_to_i64(in posit64_t value) => throw new NotImplementedException();
 
         public static float p64_to_f32(in posit64_t value) => (float)ConvertP64ToDouble(value);
 
