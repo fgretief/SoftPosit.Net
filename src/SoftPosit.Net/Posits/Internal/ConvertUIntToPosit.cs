@@ -60,7 +60,7 @@ namespace System.Numerics.Posits.Internal
             Console.WriteLine();
             Console.WriteLine("      nbits = {0}", nbits);
             Console.WriteLine("      shift = {0}", fracShift);
-            Console.WriteLine("         iA = {1} {0}", uiA, uiA.TopBits(32));
+            Console.WriteLine("         iA = {1} {0}", uiA, uiA.TopBits(nbits));
             Console.WriteLine("      fracA = {0}", fracA.TopBits(nbits));
             Console.WriteLine("       mask = {0}", mask.TopBits(nbits));
 
