@@ -940,6 +940,151 @@ namespace System.Numerics.Posits.Tests
             Assert.That(x, Is.EqualTo(value));
         }
 
+        [TestCase(0x8000, 0ul)] // NaR
+        [TestCase(0x0000, 0ul)] // Zero
+        [TestCase(0x4000, 1ul)]
+        [TestCase(0x5000, 2ul)]
+        [TestCase(0x5800, 3ul)]
+        [TestCase(0x6000, 4ul)]
+        [TestCase(0x6200, 5ul)]
+
+        [TestCase(0x3000, 0ul)] // 0.5 round down (tie)
+        [TestCase(0x4800, 2ul)] // 1.5 round up (tie)
+        [TestCase(0x5400, 2ul)] // 2.5 round down (tie)
+        [TestCase(0x5C00, 4ul)] // 3.5 round up (tie)
+
+        [TestCase(0x8001, 0ul)] // -maxpos
+        [TestCase(0x8002, 0ul)]
+        [TestCase(0xB000, 0ul)] // -2
+        [TestCase(0xC000, 0ul)] // -1
+        [TestCase(0xFFFF, 0ul)] // -minpos
+
+        [TestCase(0x7000, 16ul)]
+        [TestCase(0x7400, 32ul)]
+        [TestCase(0x7E00, 1024ul)]
+        [TestCase(0x7F00, 4096ul)]
+        [TestCase(0x7F40, 8192ul)]
+        [TestCase(0x7FA0, 32768ul)]
+        [TestCase(0x7FF0, 1048576ul)]
+        [TestCase(0x7FFA, 8388608ul)]
+        [TestCase(0x7FFB, 12582912ul)]
+        [TestCase(0x7FFC, 16777216ul)]
+        [TestCase(0x7FFD, 33554432ul)]
+        [TestCase(0x7FFE, 67108864ul)]
+        [TestCase(0x7FFF, 268435456ul)] // +maxpos
+        public void TestPosit16ToUInt64Cast(int ui, ulong value)
+        {
+            Assert.That(ui & ~((1<<16)-1), Is.EqualTo(0));
+
+            var p = new Posit16((ushort)ui);
+
+            var x = (ulong)p;
+
+            Assert.That(x, Is.EqualTo(value));
+        }
+
+        [TestCase(0x8000_0000u, 0ul)] // NaR
+        [TestCase(0x0000_0000u, 0ul)] // Zero
+        [TestCase(0x4000_0000u, 1ul)]
+        [TestCase(0x4800_0000u, 2ul)]
+        [TestCase(0x4C00_0000u, 3ul)]
+        [TestCase(0x5000_0000u, 4ul)]
+        [TestCase(0x5200_0000u, 5ul)]
+
+        [TestCase(0x3800_0000u, 0ul)] // 0.5 round down (tie)
+        [TestCase(0x4400_0000u, 2ul)] // 1.5 round up (tie)
+        [TestCase(0x4A00_0000u, 2ul)] // 2.5 round down (tie)
+        [TestCase(0x4E00_0000u, 4ul)] // 3.5 round up (tie)
+
+        [TestCase(0x8000_0001u, 0ul)] // -maxpos
+        [TestCase(0x8000_0002u, 0ul)]
+        [TestCase(0xB100_0000u, 0ul)] // -2
+        [TestCase(0xC000_0000u, 0ul)] // -1
+        [TestCase(0xFFFF_FFFFu, 0ul)] // -minpos
+
+        [TestCase(0b01111111111111100000000000000000u, 4503599627370496ul)]
+        [TestCase(0b01111111111111110000000000000000u, 72057594037927936ul)]
+        [TestCase(0b01111111111111111000000000000000u, 1152921504606846976ul)]
+        [TestCase(0b01111111111111111010000000000000u, 4611686018427387904ul)]
+        [TestCase(0b01111111111111111011000000000000u, 9223372036854775808ul)]
+        [TestCase(0b01111111111111111011100000000000u, 13835058055282163712ul)]
+        [TestCase(0b01111111111111111011111111111100u, 18437736874454810624ul)]
+        [TestCase(0b01111111111111111011111111111101u, 18439988674268495872ul)]
+        [TestCase(0b01111111111111111011111111111110u, 18442240474082181120ul)]
+        [TestCase(0b01111111111111111011111111111111u, 18444492273895866368ul)]
+        [TestCase(0b01111111111111111100000000000000u, ulong.MaxValue)] // 2^64
+        [TestCase(0b01111111111111111111111111111111u, ulong.MaxValue)] // +maxpos
+
+        public void TestPosit32ToUInt64Cast(uint ui, ulong value)
+        {
+            var p = new Posit32(ui);
+
+            var x = (ulong)p;
+
+            Assert.That(x, Is.EqualTo(value));
+        }
+
+        [TestCase(0x8000_0000_0000_0000ul, 0ul)] // NaR
+        [TestCase(0ul, 0ul)]
+        [TestCase(0x4000_0000_0000_0000ul, 1ul)]
+        [TestCase(0x4400_0000_0000_0000ul, 2ul)]
+        [TestCase(0x4600_0000_0000_0000ul, 3ul)]
+        [TestCase(0x4800_0000_0000_0000ul, 4ul)]
+        [TestCase(0x4900_0000_0000_0000ul, 5ul)]
+        [TestCase(0x5C00_0000_0000_0000ul, 128ul)] // round to nearest, tie to even: 128.5 => 128, but 129.5 => 130
+        [TestCase(0x5C04_0000_0000_0000ul, 128ul)] // 128.5    = + 256^(0) · 2^(7) · (1 + 1/256)
+        [TestCase(0x5C04_0000_0000_0001ul, 129ul)] // 128.500..= + 256^(0) · 2^(7) · (1 + 1125899906842625/288230376151711744)
+        [TestCase(0x5C08_0000_0000_0000ul, 129ul)] // 129      = + 256^(0) · 2^(7) · (1 + 1/128)
+        [TestCase(0x5C09_0000_0000_0000ul, 129ul)] // 129.125  = + 256^(0) · 2^(7) · (1 + 9/1024)
+        [TestCase(0x5C0B_FFFF_FFFF_FFFFul, 129ul)] // 129.499..= + 256^(0) · 2^(7) · (1 + 3377699720527871/288230376151711744)
+        [TestCase(0x5C0C_0000_0000_0000ul, 130ul)] // 129.5    = + 256^(0) · 2^(7) · (1 + 3/256)
+        [TestCase(0x5C0C_0000_0000_0001ul, 130ul)] // 129.500..= + 256^(0) · 2^(7) · (1 + 3377699720527873/288230376151711744)
+        [TestCase(0x5C0E_0000_0000_0000ul, 130ul)] // 129.75   = + 256^(0) · 2^(7) · (1 + 7/512)
+        [TestCase(0x6000_0000_0000_0000ul, 256ul)] // 256      = + 256^(1) · 2^(0) · (1 + 0/1)
+        [TestCase(0x6200_0000_0000_0000ul, 512ul)]
+        [TestCase(0x6300_0000_0000_0000ul, 768ul)]
+        [TestCase(0x63FF_FFFF_FFFF_FFFFul, 1024ul)] // 1024.99.. = + 256^(1) · 2^(1) · (1 + 144115188075855871/144115188075855872)
+        [TestCase(0x70FF_FFFF_FFFF_FFFFul, 131072ul)]
+        [TestCase(0x77FF_FFFF_FFFF_FFFFul, 16777216ul)]
+        [TestCase(0x79FF_FFFF_FFFF_FFFFul, 268435456ul)]
+
+        [TestCase(0x7F3F_FFFF_FFFF_FFFFul, 4503599627370496ul)] // last number to require rounding
+        [TestCase(0x7F40_0000_0000_0000ul, 4503599627370496ul)] // rounding limit
+        [TestCase(0x7F40_0000_0000_0001ul, 4503599627370497ul)]
+        [TestCase(0x7F40_0000_0000_0002ul, 4503599627370498ul)]
+        [TestCase(0x7F4F_FFFF_FFFF_FFFFul, 9007199254740991ul)]
+
+        [TestCase(0x7FAF_FFFF_FFFF_FFFFul, 4611686018427386880ul)] // + 256^(7) · 2^(5) · (1 + 2251799813685247/2251799813685248)
+        [TestCase(0x7FB0_0000_0000_0000ul, 4611686018427387904ul)] // + 256^(7) · 2^(6) · (1 + 0/1)
+        [TestCase(0x7FB0_0000_0000_0001ul, 4611686018427389952ul)] // + 256^(7) · 2^(6) · (1 + 1/2251799813685248)
+
+        [TestCase(0x7FB7_FFFF_FFFF_FFFCul, 9223372036854767616ul)] // + 256^(7) · 2^(6) · (1 + 562949953421311/562949953421312)
+        [TestCase(0x7FB7_FFFF_FFFF_FFFDul, 9223372036854769664ul)] // + 256^(7) · 2^(6) · (1 + 2251799813685245/2251799813685248)
+        [TestCase(0x7FB7_FFFF_FFFF_FFFEul, 9223372036854771712ul)] // + 256^(7) · 2^(6) · (1 + 1125899906842623/1125899906842624)
+        [TestCase(0x7FB7_FFFF_FFFF_FFFFul, 9223372036854773760ul)] // + 256^(7) · 2^(6) · (1 + 2251799813685247/2251799813685248)
+
+        [TestCase(0x7FB8_0000_0000_0000ul, 9223372036854775808ul)] // 2^63
+        [TestCase(0x7FB8_0000_0000_0001ul, 9223372036854779904ul)] // 2^63 + 4096
+
+        [TestCase(0x7FBF_FFFF_FFFF_FFFCul, 18446744073709535232ul)] // 2^64 - 16384
+        [TestCase(0x7FBF_FFFF_FFFF_FFFDul, 18446744073709539328ul)] // 2^64 - 12288
+        [TestCase(0x7FBF_FFFF_FFFF_FFFEul, 18446744073709543424ul)] // 2^64 - 8192
+        [TestCase(0x7FBF_FFFF_FFFF_FFFFul, 18446744073709547520ul)] // 2^64 - 4096
+        [TestCase(0x7FC0_0000_0000_0000ul, ulong.MaxValue)] // 2^64
+
+        [TestCase(0x0000_0000_0000_0001ul, 0ul)] // +minpos
+        [TestCase(0x7FFF_FFFF_FFFF_FFFFul, ulong.MaxValue)] // +maxpos
+        [TestCase(0x8000_0000_0000_0001ul, 0ul)] // -maxpos
+        [TestCase(0xFFFF_FFFF_FFFF_FFFFul, 0ul)] // -minpos
+        public void TestPosit64ToUInt64Cast(ulong ui, ulong value)
+        {
+            var p = new Posit64(ui);
+
+            var x = (ulong)p;
+
+            Assert.That(x, Is.EqualTo(value));
+        }
+
         [TestCase(0.0, 0b0000_0000)]
         [TestCase(1.0, 0b0100_0000)]
         [TestCase(-1.0, 0b1100_0000)]

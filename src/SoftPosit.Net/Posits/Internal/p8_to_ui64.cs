@@ -14,14 +14,14 @@ namespace System.Numerics.Posits.Internal
                 return 0;  // Negative or NaR
             }
 
-            ulong iZ;
+            ulong uiZ;
             if (uiA <= 0x20)
             {                     // 0 <= |pA| <= 1/2 rounds to zero.
                 return 0;
             }
             else if (uiA < 0x50)
             {                 // 1/2 < x < 3/2 rounds to 1.
-                iZ = 1;
+                uiZ = 1;
             }
             else
             {                                   // Decode the posit, left-justifying as we go.
@@ -35,32 +35,29 @@ namespace System.Numerics.Posits.Internal
                 }
                 uiA <<= 1;                           // Skip over termination bit, which is 0.
 
-                iZ = ((ulong)uiA | 0x40) << 55;      // Left-justify fraction in 32-bit result (one left bit padding)
+                uiZ = ((ulong)uiA | 0x40) << 55;      // Left-justify fraction in 32-bit result (one left bit padding)
 
                 var mask = 0x2000000000000000ul >> scale;  // Point to the last bit of the integer part.
 
-                var bitLast = (iZ & mask);      // Extract the bit, without shifting it.
+                var bitLast = (uiZ & mask);      // Extract the bit, without shifting it.
                 mask >>= 1;
-                var tmp = (iZ & mask);
+                var tmp = (uiZ & mask);
                 var bitNPlusOne = tmp != 0;
-                iZ ^= tmp;                           // Erase the bit, if it was set.
-                tmp = iZ & (mask - 1);               // tmp has any remaining bits. // This is bitsMore
-                iZ ^= tmp;                           // Erase those bits, if any were set.
+                uiZ ^= tmp;                           // Erase the bit, if it was set.
+                tmp = uiZ & (mask - 1);               // tmp has any remaining bits. // This is bitsMore
+                uiZ ^= tmp;                           // Erase those bits, if any were set.
 
                 if (bitNPlusOne)
                 {                   // logic for round to nearest, tie to even
                     if ((bitLast | tmp) != 0)
                     {
-                        iZ += (mask << 1);
+                        uiZ += (mask << 1);
                     }
                 }
-                iZ = (ulong)iZ >> (61 - scale);      // Right-justify the integer.
+                uiZ = (ulong)uiZ >> (61 - scale);      // Right-justify the integer.
             }
 
-            return iZ;
-
+            return uiZ;
         }
-
-
     }
 }

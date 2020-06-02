@@ -119,7 +119,10 @@ namespace System.Numerics.Posits.Internal
             return sb.ToString();
         }
 
-        public static string ToFormula(this ulong ui, int ps, int es)
+        public static string ToFormula(this byte ui, int ps = 8, int es = 0) => ToFormula((ulong)ui, ps, es);
+        public static string ToFormula(this ushort ui, int ps = 16, int es = 1) => ToFormula((ulong)ui, ps, es);
+        public static string ToFormula(this uint ui, int ps = 32, int es = 2) => ToFormula((ulong)ui, ps, es);
+        public static string ToFormula(this ulong ui, int ps = 64, int es = 3)
         {
             if (!(2 < ps && ps <= 64))
                 throw new ArgumentOutOfRangeException(nameof(ps), ps, "Must be less or equal to 64");
