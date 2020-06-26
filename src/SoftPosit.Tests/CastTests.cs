@@ -445,6 +445,102 @@ namespace System.Numerics.Posits.Tests
             Assert.That(x, Is.EqualTo(value));
         }
 
+        [TestCase(0x8000u, 0u)] // NaR
+        [TestCase(0x0000u, 0u)] // Zero
+        [TestCase(0x4000u, 1u)]
+        [TestCase(0x5000u, 2u)]
+        [TestCase(0x5800u, 3u)]
+        [TestCase(0x6000u, 4u)]
+        [TestCase(0x6200u, 5u)]
+
+        [TestCase(0x3000u, 0u)] // 0.5 round down (tie)
+        [TestCase(0x4800u, 2u)] // 1.5 round up (tie)
+        [TestCase(0x5400u, 2u)] // 2.5 round down (tie)
+        [TestCase(0x5C00u, 4u)] // 3.5 round up (tie)
+
+        [TestCase(0x7A00u, 128u)] // round to nearest, tie to even: 128.5 => 128, but 129.5 => 130
+        [TestCase(0x7A01u, 128u)] // 128.25 = + 4^(3) · 2^(1) · (1 + 1/512)
+        [TestCase(0x7A02u, 128u)] // 128.5  = + 4^(3) · 2^(1) · (1 + 1/256)
+        [TestCase(0x7A03u, 129u)] // 128.75 = + 4^(3) · 2^(1) · (1 + 3/512)
+        [TestCase(0x7A04u, 129u)] // 129    = + 4^(3) · 2^(1) · (1 + 1/128)
+        [TestCase(0x7A05u, 129u)] // 129.25 = + 4^(3) · 2^(1) · (1 + 5/512)
+        [TestCase(0x7A06u, 130u)] // 129.5  = + 4^(3) · 2^(1) · (1 + 3/256)
+        [TestCase(0x7A07u, 130u)] // 129.75 = + 4^(3) · 2^(1) · (1 + 7/512)
+        [TestCase(0x7C00u, 256u)] // 256    = + 4^(4) · 2^(0) · (1 + 0/1)
+        [TestCase(0x7D00u, 512u)]
+        [TestCase(0x7D80u, 768u)]
+
+        [TestCase(0x7FFFu, 268435456u)] // +maxpos
+        [TestCase(0x0001u, 0u)] // +minpos
+        [TestCase(0xFFFFu, 0u)] // -minpos
+        [TestCase(0x8001u, 0u)] // -maxpos
+        public void TestPosit16ToUInt32Cast(uint ui, uint value)
+        {
+            Assert.That(ui & ~((1 << 16) - 1), Is.EqualTo(0));
+
+            var p = new Posit16((ushort)ui);
+
+            var x = (uint)p;
+
+            Assert.That(x, Is.EqualTo(value));
+        }
+
+        [TestCase(0x8000_0000u, 0u)] // NaR
+        [TestCase(0x0000_0000u, 0u)] // Zero
+        [TestCase(0x4000_0000u, 1u)]
+        [TestCase(0x4800_0000u, 2u)]
+        [TestCase(0x4C00_0000u, 3u)]
+        [TestCase(0x5000_0000u, 4u)]
+        [TestCase(0x5200_0000u, 5u)]
+
+        [TestCase(0x3800_0000u, 0u)] // 0.5 round down (tie)
+        [TestCase(0x4400_0000u, 2u)] // 1.5 round up (tie)
+        [TestCase(0x4A00_0000u, 2u)] // 2.5 round down (tie)
+        [TestCase(0x4E00_0000u, 4u)] // 3.5 round up (tie)
+
+        [TestCase(0b01111111101100000000000000000000u, 2147483648)] // 2^31
+        [TestCase(0b01111111101111111111111111111100u, 4294959104)]
+        [TestCase(0b01111111101111111111111111111101u, 4294961152)]
+        [TestCase(0b01111111101111111111111111111110u, 4294963200)]
+        [TestCase(0b01111111101111111111111111111111u, 4294965248)]
+        [TestCase(0b01111111110000000000000000000000u, uint.MaxValue)] // 2^32
+
+        [TestCase(0x7FFF_FFFFu, uint.MaxValue)] // +maxpos
+        [TestCase(0x0000_0001u, 0u)] // +minpos
+        [TestCase(0xFFFF_FFFFu, 0u)] // -minpos
+        [TestCase(0x8000_0001u, 0u)] // -maxpos
+        public void TestPosit32ToUInt32Cast(uint ui, uint value)
+        {
+            var p = new Posit32(ui);
+
+            var x = (uint)p;
+
+            Assert.That(x, Is.EqualTo(value));
+        }
+
+        [TestCase(0x8000_0000_0000_0000ul, 0u)] // NaR
+        [TestCase(0x0000_0000_0000_0000ul, 0u)] // Zero
+        [TestCase(0x4000_0000_0000_0000ul, 1u)]
+        [TestCase(0x4400_0000_0000_0000ul, 2u)]
+        [TestCase(0x4600_0000_0000_0000ul, 3u)]
+        [TestCase(0x4800_0000_0000_0000ul, 4u)]
+        [TestCase(0x4900_0000_0000_0000ul, 5u)]
+
+        [TestCase(0x7BFF_FFFF_FF00_0000ul, uint.MaxValue)]
+
+        [TestCase(0x0000_0000_0000_0001ul, 0u)] // +minpos
+        [TestCase(0x7FFF_FFFF_FFFF_FFFFul, uint.MaxValue)] // +maxpos
+        [TestCase(0x8000_0000_0000_0001ul, 0u)] // -maxpos
+        [TestCase(0xFFFF_FFFF_FFFF_FFFFul, 0u)] // -minpos
+        public void TestPosit64ToUInt32Cast(ulong ui, uint value)
+        {
+            var p = new Posit64(ui);
+
+            var x = (uint)p;
+
+            Assert.That(x, Is.EqualTo(value));
+        }
+
         [TestCase(0, 0b0000_0000)]
         [TestCase(1, 0b0100_0000)]
         [TestCase(2, 0b0110_0000)]
