@@ -409,6 +409,136 @@ namespace System.Numerics.Posits.Tests
             Assert.That(x, Is.EqualTo(value));
         }
 
+        [TestCase(0x8000u, 0)] // NaR
+        [TestCase(0x0000u, 0)] // Zero
+        [TestCase(0x4000u, 1)]
+        [TestCase(0x5000u, 2)]
+        [TestCase(0x5800u, 3)]
+        [TestCase(0x6000u, 4)]
+        [TestCase(0x6200u, 5)]
+
+        [TestCase(0x3000u, 0)] // 0.5 round down (tie)
+        [TestCase(0x4800u, 2)] // 1.5 round up (tie)
+        [TestCase(0x5400u, 2)] // 2.5 round down (tie)
+        [TestCase(0x5C00u, 4)] // 3.5 round up (tie)
+
+        [TestCase(0x7A00u, 128)] // round to nearest, tie to even: 128.5 => 128, but 129.5 => 130
+        [TestCase(0x7A01u, 128)] // 128.25 = + 4^(3) · 2^(1) · (1 + 1/512)
+        [TestCase(0x7A02u, 128)] // 128.5  = + 4^(3) · 2^(1) · (1 + 1/256)
+        [TestCase(0x7A03u, 129)] // 128.75 = + 4^(3) · 2^(1) · (1 + 3/512)
+        [TestCase(0x7A04u, 129)] // 129    = + 4^(3) · 2^(1) · (1 + 1/128)
+        [TestCase(0x7A05u, 129)] // 129.25 = + 4^(3) · 2^(1) · (1 + 5/512)
+        [TestCase(0x7A06u, 130)] // 129.5  = + 4^(3) · 2^(1) · (1 + 3/256)
+        [TestCase(0x7A07u, 130)] // 129.75 = + 4^(3) · 2^(1) · (1 + 7/512)
+        [TestCase(0x7C00u, 256)] // 256    = + 4^(4) · 2^(0) · (1 + 0/1)
+        [TestCase(0x7D00u, 512)]
+        [TestCase(0x7D80u, 768)]
+
+        [TestCase(0x7FFFu, 268435456)] // +maxpos
+        [TestCase(0x0001u, 0)] // +minpos
+        [TestCase(0xFFFFu, 0)] // -minpos
+        [TestCase(0x8001u, -268435456)] // -maxpos
+
+        [TestCase(0xC000u, -1)]
+        [TestCase(0xB000u, -2)]
+        [TestCase(0xA800u, -3)]
+        public void TestPosit16ToInt32Cast(uint ui, int value)
+        {
+            Assert.That(ui & ~((1 << 16) - 1), Is.EqualTo(0));
+
+            var p = new Posit16((ushort)ui);
+
+            var x = (int)p;
+
+            Assert.That(x, Is.EqualTo(value));
+        }
+
+        [TestCase(0x8000_0000u, 0)] // NaR
+        [TestCase(0x0000_0000u, 0)] // Zero
+        [TestCase(0x4000_0000u, 1)]
+        [TestCase(0x4800_0000u, 2)]
+        [TestCase(0x4C00_0000u, 3)]
+        [TestCase(0x5000_0000u, 4)]
+        [TestCase(0x5200_0000u, 5)]
+
+        [TestCase(0x3800_0000u, 0)] // 0.5 round down (tie)
+        [TestCase(0x4400_0000u, 2)] // 1.5 round up (tie)
+        [TestCase(0x4A00_0000u, 2)] // 2.5 round down (tie)
+        [TestCase(0x4E00_0000u, 4)] // 3.5 round up (tie)
+
+        [TestCase(0x6C00_0000u, 128)] // round to nearest, tie to even: 128.5 => 128, but 129.5 => 130
+        [TestCase(0x6C04_0000u, 128)] // 128.5    = + 16^(1) · 2^(3) · (1 + 1/256)
+        [TestCase(0x6C08_0000u, 129)] // 129      = + 16^(1) · 2^(3) · (1 + 1/128)
+        [TestCase(0x6C09_0000u, 129)] // 129.125  = + 16^(1) · 2^(3) · (1 + 9/1024)
+        [TestCase(0x6C0B_FFFFu, 129)] // 129.499..= + 16^(1) · 2^(3) · (1 + 786431/67108864)
+        [TestCase(0x6C0C_0000u, 130)] // 129.5    = + 16^(1) · 2^(3) · (1 + 3/256)
+        [TestCase(0x6C0C_0001u, 130)] // 129.500..= + 16^(1) · 2^(3) · (1 + 786433/67108864)
+        [TestCase(0x6C0E_0000u, 130)] // 129.75   = + 16^(1) · 2^(3) · (1 + 7/512)
+        [TestCase(0x7000_0000u, 256)] // 256      = + 16^(2) · 2^(0) · (1 + 0/1)
+        [TestCase(0x7200_0000u, 512)]
+        [TestCase(0x7300_0000u, 768)]
+
+        [TestCase(0b01111111100100000000000000000000u, 536870912)]  // 2^29
+        [TestCase(0b01111111101000000000000000000000u, 1073741824)] // 2^30
+        [TestCase(0b01111111101011111111111111111100u, 2147479552)]
+        [TestCase(0b01111111101011111111111111111101u, 2147480576)]
+        [TestCase(0b01111111101011111111111111111110u, 2147481600)]
+        [TestCase(0b01111111101011111111111111111111u, 2147482624)]
+        [TestCase(0b01111111101100000000000000000000u, int.MaxValue)] // 2^31
+        [TestCase(0b01111111110000000000000000000000u, int.MaxValue)] // 2^32
+        [TestCase(0b01111111111111111011000000000000u, int.MaxValue)] // 2^63
+        [TestCase(0b01111111111111111100000000000000u, int.MaxValue)] // 2^64
+
+        [TestCase(0x7FFF_FFFFu, int.MaxValue)] // +maxpos
+        [TestCase(0x0000_0001u, 0)] // +minpos
+        [TestCase(0xFFFF_FFFFu, 0)] // -minpos
+        [TestCase(0x8000_0001u, int.MinValue)] // -maxpos
+
+        [TestCase(0xC000_0000u, -1)]
+        [TestCase(0xB800_0000u, -2)]
+        [TestCase(0xB400_0000u, -3)]
+        public void TestPosit32ToInt32Cast(uint ui, int value)
+        {
+            var p = new Posit32(ui);
+
+            var x = (int)p;
+
+            Assert.That(x, Is.EqualTo(value));
+        }
+
+        [TestCase(0x8000_0000_0000_0000ul, 0)] // NaR
+        [TestCase(0x0000_0000_0000_0000ul, 0)] // Zero
+        [TestCase(0x4000_0000_0000_0000ul, 1)]
+        [TestCase(0x4400_0000_0000_0000ul, 2)]
+        [TestCase(0x4600_0000_0000_0000ul, 3)]
+        [TestCase(0x4800_0000_0000_0000ul, 4)]
+        [TestCase(0x4900_0000_0000_0000ul, 5)]
+
+        [TestCase(0x3C00_0000_0000_0000ul, 0)] // 0.5 round down (tie)
+        [TestCase(0x4200_0000_0000_0000ul, 2)] // 1.5 round up (tie)
+        [TestCase(0x4500_0000_0000_0000ul, 2)] // 2.5 round down (tie)
+        [TestCase(0x4700_0000_0000_0000ul, 4)] // 3.5 round up (tie)
+
+        [TestCase(0x7B80_0000_0000_0000ul, int.MaxValue)] // 2^31
+        [TestCase(0x7C00_0000_0000_0000ul, int.MaxValue)] // 2^32
+
+        [TestCase(0x0000_0000_0000_0001ul, 0)] // +minpos
+        [TestCase(0x7FFF_FFFF_FFFF_FFFFul, int.MaxValue)] // +maxpos
+        [TestCase(0x8000_0000_0000_0001ul, int.MinValue)] // -maxpos
+        [TestCase(0xFFFF_FFFF_FFFF_FFFFul, 0)] // -minpos
+
+        [TestCase(0xC000_0000_0000_0000ul, -1)]
+        [TestCase(0xBC00_0000_0000_0000ul, -2)]
+        [TestCase(0xBA00_0000_0000_0000ul, -3)]
+        public void TestPosit64ToInt32Cast(ulong ui, int value)
+        {
+            var p = new Posit64(ui);
+
+            var x = (int)p;
+
+            Assert.That(x, Is.EqualTo(value));
+        }
+
         [TestCase(0b1000_0000, uint.MinValue)] // NaR
         [TestCase(0b1000_0001, 0u)] // -64 (-maxpos)
         [TestCase(0b1100_0000, 0u)] // -1
